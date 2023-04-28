@@ -1,4 +1,4 @@
-
+import { Navbar } from "../ui"
 
 
 interface Props {
@@ -10,7 +10,8 @@ interface Props {
 export const AuthLayout: React.FC<Props> = ({children}) => {
    return (
     <>   
-       {children}
+      <Navbar/>    
+      {children}
     </>
    )
 }
