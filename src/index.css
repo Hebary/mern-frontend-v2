@@ -7,3 +7,13 @@
 .red-hat-font {
   font-family: 'Red Hat Display', sans-serif;
 }
+
+.li {
+  transition: .5s; 
+}
+
+.li:hover{
+  filter: drop-shadow(0 0 2em #646cffaa);
+  color: #505757;
+}
+

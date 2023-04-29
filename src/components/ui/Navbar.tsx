@@ -1,6 +1,7 @@
-import { AppBar, Toolbar, Typography, Link, Box, Button, IconButton, Input, InputAdornment } from '@mui/material';
+import { useContext, useState } from 'react';
+import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornment } from '@mui/material';
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
-import { useState } from 'react';
+import { UiContext } from '../../context/ui';
 
 // import { UIContext } from '@/context';
 
@@ -8,7 +9,7 @@ import { useState } from 'react';
 
 export const Navbar: React.FC = () => {
 
-    // const { toggleMenu } = useContext(UIContext);
+    const { toggleMenu } = useContext(UiContext);
 
     const [search, setSearch] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -17,9 +18,9 @@ export const Navbar: React.FC = () => {
         if(search.trim().length === 0) return;
     }
     
-    const toggleMenu = () => {
-        console.log('toggle');
-    }
+    // const toggleMenu = () => {
+    //     console.log('toggle');
+    // }
 
     return (
         <AppBar>
@@ -37,7 +38,7 @@ export const Navbar: React.FC = () => {
                 <Box flex={1}/>
 
                 <Box gap={3} className='red-hat-font' sx={{borderRadius:10, display: isSearchVisible ? 'none' : { xs: 'none', sm: 'flex' } }}>
-                        <Link underline='none' className='red-hat-font'  sx={{ fontSize: 20 ,cursor: 'pointer'}}>
+                        <Link underline='none' className='red-hat-font li'  sx={{ fontSize: 20 ,cursor: 'pointer'}}>
                           {/* <Button color={ 'primary' }> */}
                                 Projects
                           {/* </Button> */}
@@ -89,7 +90,7 @@ export const Navbar: React.FC = () => {
                     {/* xs */}
                 <IconButton
                     sx={{ display: { xs: 'flex', sm: 'none' } }}
-                    onClick={toggleMenu}
+                    // onClick={toggleMenu}
                 >
                     <SearchOutlined color='primary'/>
                 </IconButton>
