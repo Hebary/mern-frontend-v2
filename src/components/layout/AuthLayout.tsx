@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import { Navbar } from "../ui"
 import { Sidebar } from "../ui"
 
@@ -12,8 +13,10 @@ export const AuthLayout: React.FC<Props> = ({children}) => {
    return (
     <>   
       <Navbar/>
-      <Sidebar/>    
-      {children}
+      <Sidebar/>
+      <Box py={10} px={4}>
+        {children}
+      </Box>    
     </>
    )
 }

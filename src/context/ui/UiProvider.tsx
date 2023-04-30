@@ -19,7 +19,6 @@ export const UiProvider: React.FC<Props> = ({ children }) => {
     const [state, dispatch] = useReducer(uiReducer, Ui_INITIAL_STATE);
 
     const toggleMenu = () => {
-        console.log('provider');
         dispatch({type: '[Ui]-TOGGLE_MENU'})
     }
 

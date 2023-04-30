@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornme
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
 import { UiContext } from '../../context/ui';
 
-// import { UIContext } from '@/context';
+
 
 
 
@@ -18,14 +18,11 @@ export const Navbar: React.FC = () => {
         if(search.trim().length === 0) return;
     }
     
-    // const toggleMenu = () => {
-    //     console.log('toggle');
-    // }
 
     return (
         <AppBar>
-            <Toolbar  color='black'>
-                    <Link display='flex' flexDirection='column' underline='none' sx={{ cursor:'pointer' }} alignItems='center'>
+            <Toolbar>
+                    <Link display='flex' underline='none' sx={{ cursor:'pointer' }} >
                         <Box display='flex'>
                           <CategoryOutlined sx={{ fontSize: '30px' }}/>
                           <Box>
@@ -38,7 +35,7 @@ export const Navbar: React.FC = () => {
                 <Box flex={1}/>
 
                 <Box gap={3} className='red-hat-font' sx={{borderRadius:10, display: isSearchVisible ? 'none' : { xs: 'none', sm: 'flex' } }}>
-                        <Link underline='none' className='red-hat-font li'  sx={{ fontSize: 20 ,cursor: 'pointer'}}>
+                        <Link underline='none' className='red-hat-font li'  sx={{ fontSize: 16 ,cursor: 'pointer'}}>
                           {/* <Button color={ 'primary' }> */}
                                 Projects
                           {/* </Button> */}
@@ -87,17 +84,9 @@ export const Navbar: React.FC = () => {
                     )
                 }
 
-                    {/* xs */}
-                <IconButton
-                    sx={{ display: { xs: 'flex', sm: 'none' } }}
-                    // onClick={toggleMenu}
-                >
-                    <SearchOutlined color='primary'/>
-                </IconButton>
-
                     
 
-                <IconButton onClick={toggleMenu}>
+                <IconButton onClick={ toggleMenu }>
                     <MenuOutlined color='primary'/>
                 </IconButton>
         
