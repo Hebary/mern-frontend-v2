@@ -38,7 +38,7 @@ export const Sidebar: React.FC = () => {
         <Drawer
             open={ isMenuOpen }
             onClose={ toggleMenu }
-            anchor='left'
+            anchor='right'
             sx={{ backdropFilter:'blur(2px)', transition: 'all .7s cubic-bezier(0.25, 0.8, 0.25, 1)' }}
         >
             <Box sx={{ width: 250, paddingTop: 1 }}>
