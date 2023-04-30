@@ -1,29 +1,42 @@
-// import { useEffect, useState } from 'react';
-import { Box, Button, Chip, Divider, Grid, Link, TextField, Typography } from '@mui/material';
-// import { ErrorOutline } from '@mui/icons-material';
+ import { useState } from 'react';
+import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+ import { ErrorOutline } from '@mui/icons-material';
+import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
+import { utils } from '../../utils';
 
-
+type FormData = {
+    name    : string;
+    email   : string;
+    password: string;
+}
 
 export const CreateAccount: React.FC = () => {
 
-  {/* onSubmit={ handleSubmit(onSignIn) } */}
-   return (
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    
+    const [error, setError] = useState(false);
+
+    const onSignUp = async ({name, email, password}:FormData) =>{
+            console.log({name,email, password});
+    }
+    
+    return (
         <AuthLayout title='Sign In Page'>
           <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
-              <Typography color='info.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ textAlign:'justify', ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>
+              <Typography color='info.main' variant='h3' component='h1' fontWeight={ 300 } sx={{ textAlign:'justify', ml: 1, letterSpacing: 2, textTransform:'capitalize' }}>
                 Sign Up
               </Typography>
-              <Typography color='primary.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>
+              <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>
                 and manage your projects
               </Typography>
           </Box>
-            <form  className='fadeInUp'>
+            <form  className='fadeInUp' onSubmit={ handleSubmit(onSignUp) }>
                 <Grid sx={{ maxWidth:'350px', mx:'auto', p:4, borderRadius:5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt:2 }}>
                       <Grid container spacing={ 3 }>
                             <Grid item xs={ 12 }>
                                 
-                                {/* <Chip
+                                <Chip
                                     
                                     label='Please check your credentials'
                                     color='error'
@@ -31,32 +44,34 @@ export const CreateAccount: React.FC = () => {
                                     icon= {<ErrorOutline/>}
                                     variant='outlined'
                                     sx={{ display: error ? 'flex' : 'none' , mt: 1 }}
-                                /> */}
+                                />
 
                             </Grid>
 
                             <Grid item xs={ 12 } >
                                 <TextField 
-                                    // type='email'
-                                    // {...register('email',{
-                                    //     required: 'Email is required',
-                                    //     validate: utils.isEmail
-                                    // })}
-                                    // error={ !!errors.email }
-                                    // helperText={errors.email?.message}
+                                    type='text'
+                                    {...register('name',{
+                                        required: 'Name is required',
+                                        minLength: {
+                                            value: 6, message:'Name must be at least 2 characters'
+                                        }
+                                    })}
+                                    error={ !!errors.name }
+                                    helperText={errors.name?.message}
                                     variant='filled' 
                                     fullWidth 
                                     label='Name' />
                             </Grid>
                             <Grid item xs={ 12 } >
                                 <TextField 
-                                    // type='email'
-                                    // {...register('email',{
-                                    //     required: 'Email is required',
-                                    //     validate: utils.isEmail
-                                    // })}
-                                    // error={ !!errors.email }
-                                    // helperText={errors.email?.message}
+                                    type='email'
+                                    {...register('email',{
+                                        required: 'Email is required',
+                                        validate: utils.emailValidator.isEmail
+                                    })}
+                                    error={ !!errors.email }
+                                    helperText={errors.email?.message}
                                     variant='filled' 
                                     fullWidth 
                                     label='Email' />
@@ -64,14 +79,14 @@ export const CreateAccount: React.FC = () => {
 
                             <Grid item xs={ 12 } >
                                 <TextField
-                                    // {...register('password',{
-                                    //     required: 'Password is required',
-                                    //     minLength: {
-                                    //         value: 6, message:'Password must be at least 6 characters'
-                                    //     }
-                                    // })} 
-                                    // error={!!errors.password}
-                                    // helperText={errors.password?.message}
+                                    {...register('password',{
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 6, message:'Password must be at least 6 characters'
+                                        }
+                                    })} 
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
                                     variant='filled' 
                                     type={'password'} 
                                     fullWidth 

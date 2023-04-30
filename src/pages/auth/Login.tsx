@@ -1,45 +1,84 @@
-// import { useEffect, useState } from 'react';
-import { Box, Button, Chip, Divider, Grid, Link, TextField, Typography } from '@mui/material';
-// import { ErrorOutline } from '@mui/icons-material';
+import { useState } from 'react';
+import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
+import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
+import { utils } from '../../utils';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-
+type FormData = {
+    email: string;
+    password: string;
+}
 
 export const Login: React.FC = () => {
 
-  {/* onSubmit={ handleSubmit(onSignIn) } */}
-   return (
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const [errorM, setError] = useState(false);
+    const [newUserAlert, setNewUserAlert] = useState(false);
+    const navigate = useNavigate();
+ 
+    const onSignIn = async ({ email, password }: FormData) => {
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`,{email, password});
+            
+            console.log(data);
+
+            setNewUserAlert(true);
+
+            setTimeout(()=> {
+                setNewUserAlert(false)
+                navigate('/');
+            },2200);
+
+        } catch (error: unknown) {
+            console.log({error});
+            setError(true);
+            setTimeout(()=> setError(false),2200);
+        }
+    }
+
+    return (
         <AuthLayout title='Sign In Page'>
           <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
-              <Typography color='info.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ textAlign:'justify', ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>Log in</Typography>
-              <Typography color='primary.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>and manage your projects</Typography>
+              <Typography color='info.main' variant='h3' component='h1' sx={{ textAlign:'justify', ml:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>Log in</Typography>
+              <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>and manage your projects</Typography>
           </Box>
-            <form  className='fadeInUp'>
-                <Grid sx={{ maxWidth:'350px', mx:'auto', p:4, borderRadius:5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt:2 }}>
+            <form  className='fadeInUp' onSubmit={ handleSubmit(onSignIn) }>
+                <Grid sx={{ maxWidth:'350px', mx:'auto', p: 4, borderRadius: 5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt: 2 }}>
                       <Grid container spacing={ 3 }>
                             <Grid item xs={ 12 }>
                                 
-                                {/* <Chip
-                                    
+                                <Chip
                                     label='Please check your credentials'
                                     color='error'
-                                    className='fadeIn'
+                                    className='fadeInUp'
                                     icon= {<ErrorOutline/>}
                                     variant='outlined'
-                                    sx={{ display: error ? 'flex' : 'none' , mt: 1 }}
-                                /> */}
+                                    sx={{ display: errorM ? 'flex' : 'none' , mt: 1 }}
+                                />
+
+                                <Chip
+                                    label='Welcome back'
+                                    color='success'
+                                    className='fadeInUp'
+                                    icon= {<CheckCircleOutline/>}
+                                    variant='outlined'
+                                    sx={{ display: newUserAlert ? 'flex' : 'none' , mt: 1 }}
+                                />
 
                             </Grid>
 
                             <Grid item xs={ 12 } >
                                 <TextField 
-                                    // type='email'
-                                    // {...register('email',{
-                                    //     required: 'Email is required',
-                                    //     validate: utils.isEmail
-                                    // })}
-                                    // error={ !!errors.email }
-                                    // helperText={errors.email?.message}
+                                    type='email'
+                                    {...register('email',{
+                                        required: 'Email is required',
+                                        validate: utils.emailValidator.isEmail
+                                    })}
+                                    error={ !!errors.email }
+                                    helperText={errors?.email?.message as string}
                                     variant='filled' 
                                     fullWidth 
                                     label='Email' />
@@ -47,14 +86,14 @@ export const Login: React.FC = () => {
 
                             <Grid item xs={ 12 } >
                                 <TextField
-                                    // {...register('password',{
-                                    //     required: 'Password is required',
-                                    //     minLength: {
-                                    //         value: 6, message:'Password must be at least 6 characters'
-                                    //     }
-                                    // })} 
-                                    // error={!!errors.password}
-                                    // helperText={errors.password?.message}
+                                    {...register('password',{
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 6, message:'Password must be at least 6 characters'
+                                        }
+                                    })} 
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message as string}
                                     variant='filled' 
                                     type={'password'} 
                                     fullWidth 
