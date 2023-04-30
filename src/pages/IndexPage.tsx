@@ -1,10 +1,10 @@
-import { AuthLayout } from "../components/layout"
+import { Layout } from "../components/layout"
 
 
 export const IndexPage: React.FC = () => {
    return (
-        <AuthLayout>
+        <Layout>
            <h1>mern</h1> 
-        </AuthLayout>
+        </Layout>
     )
 }

@@ -16,4 +16,14 @@
   filter: drop-shadow(0 0 2em #646cffaa);
   color: #505757;
 }
-
+.fadeInUp {
+  animation : fadeInUp 1s ease-in-out;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

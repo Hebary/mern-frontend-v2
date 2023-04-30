@@ -1,4 +1,6 @@
 import { Box } from "@mui/material"
+import { Navbar } from "../ui"
+import { Sidebar } from "../ui"
 
 
 interface Props {
@@ -7,10 +9,12 @@ interface Props {
 }
 
 
-export const AuthLayout: React.FC<Props> = ({children}) => {
+export const Layout: React.FC<Props> = ({children}) => {
    return (
     <>   
-      <Box py={5} px={4}>
+      <Navbar/>
+      <Sidebar/>
+      <Box py={10} px={4}>
         {children}
       </Box>    
     </>
