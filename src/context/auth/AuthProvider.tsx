@@ -2,7 +2,7 @@ import { useReducer, useEffect } from 'react';
 import { AuthContext, authReducer } from './';
 import { User } from '../../interfaces';
 import { pmApi } from '../../config';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
@@ -13,7 +13,7 @@ export interface AuthState {
     user: User
 }
 
-const Auth_INITIAL_STATE: AuthState = {
+const AUTH_INITIAL_STATE: AuthState = {
    user: {
         _id: '',
         name: '',
@@ -24,42 +24,55 @@ const Auth_INITIAL_STATE: AuthState = {
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
 
-    const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
+    const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
     const navigate = useNavigate();
 
     const setUserSession = (user: User) => {
         dispatch({ type: '[AUTH]-SET_USER', payload: user });
-        navigate('/');
+
+        setTimeout(() => {
+            navigate('/');
+        }, 1000);    
+
     }
 
 
+    // Check if user was logged in
     useEffect(() => {
         const authByToken = async () => {
             const token  = localStorage.getItem('token');
-        if(!token) return;
+            if(!token) return;
 
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+            try {
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
                 }
-            }
-            const { data } = await pmApi<User>(`/users/profile`, config);
-            setUserSession(data);
-        } catch (error) {
-            console.log(error);  
+                const { data } = await pmApi<User>(`/users/profile`, config);
+                setUserSession(data);
+            } catch (error) {
+                console.log(error);  
             }
         }
         authByToken();
     }, [])
+
+    const signOut = () => {
+        localStorage.removeItem('token');
+        dispatch({ type: '[AUTH]-SET_USER', payload: AUTH_INITIAL_STATE.user });
+    }
 
     return (
     
     <AuthContext.Provider
         value={{
                 ...state,
-                setUserSession
+
+                setUserSession,
+                user: state.user,
+                signOut
             }}>
         {children}
     </AuthContext.Provider>

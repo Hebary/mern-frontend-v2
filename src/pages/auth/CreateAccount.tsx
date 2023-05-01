@@ -4,8 +4,8 @@ import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/mater
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { pmApi } from '../../config';
 
 type FormData = {
     name    : string;
@@ -26,10 +26,10 @@ export const CreateAccount: React.FC = () => {
     
     const onSignUp = async ({name, email, password}:FormData) =>{
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users`,{name,email, password});
-            // console.log(data);
+            const { data } = await pmApi.post(`/users`, { name,email, password });
             setWelcome(true);
             setMessage(data.msg);
+
             setTimeout(()=> {
                 setWelcome(false)
                 navigate('/login');
@@ -40,7 +40,10 @@ export const CreateAccount: React.FC = () => {
             console.log({error});
             setError(true);
             setMessage((error as any).response.data.msg);
-            setTimeout(()=> setError(false),2200);
+            setTimeout(()=> {
+                setError(false)
+                setMessage('');
+            },2200);
         }
     }
     

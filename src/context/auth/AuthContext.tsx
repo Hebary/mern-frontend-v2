@@ -2,7 +2,8 @@ import { createContext } from 'react';
 import { User } from '../../interfaces';
 
 interface ContextProps {
-    // user: User;
+    user: User;
+    signOut: () => void;
     setUserSession: (user: User) => void;
 }
 

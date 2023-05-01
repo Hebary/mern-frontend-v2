@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
 import { useAuth } from '../../hooks';
@@ -17,18 +16,17 @@ type FormData = {
 export const Login: React.FC = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const [errorM, setError] = useState(false);
-    const [welcome, setWelcome] = useState(false);
-    const [message, setMessage] = useState('');
+    const [ errorM, setError ] = useState(false);
+    const [ welcome, setWelcome ] = useState(false);
+    const [ message, setMessage ] = useState('');
 
-    const navigate = useNavigate();
 
     const { setUserSession } = useAuth();
 
 
     const onSignIn = async ({ email, password }: FormData) => {
         try {
-            const { data } = await pmApi.post(`/users/login`,{ email, password });
+            const { data } = await pmApi.post(`/users/login`, { email, password });
             
             setWelcome(true);
 
@@ -45,8 +43,11 @@ export const Login: React.FC = () => {
             console.log({error});
             setError(true);
             setMessage((error as any).response.data.msg);
-            setTimeout(()=> setError(false), 2200);
-        }
+            setTimeout(()=> {
+                setError(false)
+                setMessage('');
+            }, 2200);
+        }   
     }
 
     return (

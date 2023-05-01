@@ -8,16 +8,19 @@ import {
     AddCircleOutlineRounded,
     CategoryOutlined, LoginOutlined, SearchOutlined,  
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 import { UiContext } from "../../context/ui";
+import { useAuth } from "../../hooks";
 
 
 
 export const Sidebar: React.FC = () => {
 
     const { isMenuOpen, toggleMenu } = useContext(UiContext);
-
+    const { signOut} = useAuth();
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
 
     const onSearch = () => {
         if(search.trim().length === 0) return;
@@ -26,13 +29,16 @@ export const Sidebar: React.FC = () => {
 
     }
 
+    const onSignOut = () => {
+        signOut();
+        navigate('/login')
+    }
+
     const navigateTo = (path: string) => { 
       console.log(path);
     }
 
-    const logout = () => {
-      console.log("logout");
-    }
+    
 
     return (
         <Drawer
@@ -51,12 +57,12 @@ export const Sidebar: React.FC = () => {
         
 
                 <ListItemButton
-                    onClick={ logout }
+                    onClick={ onSignOut }
                     >
                         <ListItemIcon>
                             <LoginOutlined/>
                         </ListItemIcon>
-                    <ListItemText primary={'Log out'} />
+                    <ListItemText primary={'Sign Out'} />
                 </ListItemButton>
 
                 <ListItemButton 
