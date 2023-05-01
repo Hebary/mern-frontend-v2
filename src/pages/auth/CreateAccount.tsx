@@ -1,9 +1,11 @@
  import { useState } from 'react';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
- import { ErrorOutline } from '@mui/icons-material';
+ import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
     name    : string;
@@ -15,11 +17,34 @@ export const CreateAccount: React.FC = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     
-    const [error, setError] = useState(false);
+    const [welcome, setWelcome] = useState(false);
+    const [message, setMessage] = useState('');
 
+    const [error, setError] = useState(false);
+    
+    const navigate = useNavigate();
+    
     const onSignUp = async ({name, email, password}:FormData) =>{
-            console.log({name,email, password});
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users`,{name,email, password});
+            // console.log(data);
+            setWelcome(true);
+            setMessage(data.msg);
+
+            setTimeout(()=> {
+                setWelcome(false)
+                navigate('/login');
+                setMessage('');
+            },2200);
+
+        } catch (error: unknown) {
+            console.log({error});
+            setError(true);
+            setMessage((error as any).response.data.msg);
+            setTimeout(()=> setError(false),2200);
+        }
     }
+    
     
     return (
         <AuthLayout title='Sign In Page'>
@@ -38,12 +63,21 @@ export const CreateAccount: React.FC = () => {
                                 
                                 <Chip
                                     
-                                    label='Please check your credentials'
+                                    label={message}
                                     color='error'
                                     className='fadeIn'
                                     icon= {<ErrorOutline/>}
                                     variant='outlined'
                                     sx={{ display: error ? 'flex' : 'none' , mt: 1 }}
+                                />
+                                
+                                <Chip
+                                    label={message}
+                                    color='success'
+                                    className='fadeIn'
+                                    icon= {<CheckCircleOutline/>}
+                                    variant='outlined'
+                                    sx={{ display: welcome ? 'flex' : 'none' , mt: 1 }}
                                 />
 
                             </Grid>
@@ -54,7 +88,7 @@ export const CreateAccount: React.FC = () => {
                                     {...register('name',{
                                         required: 'Name is required',
                                         minLength: {
-                                            value: 6, message:'Name must be at least 2 characters'
+                                            value: 2, message:'Name must be at least 2 characters'
                                         }
                                     })}
                                     error={ !!errors.name }

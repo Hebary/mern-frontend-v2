@@ -16,7 +16,9 @@ export const Login: React.FC = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [errorM, setError] = useState(false);
-    const [newUserAlert, setNewUserAlert] = useState(false);
+    const [welcome, setWelcome] = useState(false);
+    const [message, setMessage] = useState('');
+
     const navigate = useNavigate();
  
     const onSignIn = async ({ email, password }: FormData) => {
@@ -25,16 +27,17 @@ export const Login: React.FC = () => {
             
             console.log(data);
 
-            setNewUserAlert(true);
+            setWelcome(true);
 
             setTimeout(()=> {
-                setNewUserAlert(false)
+                setWelcome(false)
                 navigate('/');
             },2200);
 
         } catch (error: unknown) {
             console.log({error});
             setError(true);
+            setMessage((error as any).response.data.msg);
             setTimeout(()=> setError(false),2200);
         }
     }
@@ -51,7 +54,7 @@ export const Login: React.FC = () => {
                             <Grid item xs={ 12 }>
                                 
                                 <Chip
-                                    label='Please check your credentials'
+                                    label={ message }
                                     color='error'
                                     className='fadeInUp'
                                     icon= {<ErrorOutline/>}
@@ -60,12 +63,12 @@ export const Login: React.FC = () => {
                                 />
 
                                 <Chip
-                                    label='Welcome back'
+                                    label='Verified'
                                     color='success'
                                     className='fadeInUp'
                                     icon= {<CheckCircleOutline/>}
                                     variant='outlined'
-                                    sx={{ display: newUserAlert ? 'flex' : 'none' , mt: 1 }}
+                                    sx={{ display: welcome ? 'flex' : 'none' , mt: 1 }}
                                 />
 
                             </Grid>
