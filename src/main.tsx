@@ -6,14 +6,20 @@ import App from "./App.tsx";
 import theme from "./theme";
 import { UiProvider } from "./context/ui";
 import "./index.css";
+import { AuthProvider } from "./context/auth/AuthProvider.tsx";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-      <UiProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
-      </UiProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <UiProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+        </UiProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

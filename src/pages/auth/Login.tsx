@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks';
+import { User } from '../../interfaces';
+import { pmApi } from '../../config';
 
 type FormData = {
-    email: string;
-    password: string;
+    email    : string;
+    password : string;
 }
 
 export const Login: React.FC = () => {
@@ -20,25 +22,30 @@ export const Login: React.FC = () => {
     const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
- 
+
+    const { setUserSession } = useAuth();
+
+
     const onSignIn = async ({ email, password }: FormData) => {
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`,{email, password});
+            const { data } = await pmApi.post(`/users/login`,{ email, password });
             
-            console.log(data);
-
             setWelcome(true);
+
+            localStorage.setItem('token', data.token);
 
             setTimeout(()=> {
                 setWelcome(false)
-                navigate('/');
             },2200);
+            
+            setUserSession(data as User);
 
         } catch (error: unknown) {
+
             console.log({error});
             setError(true);
             setMessage((error as any).response.data.msg);
-            setTimeout(()=> setError(false),2200);
+            setTimeout(()=> setError(false), 2200);
         }
     }
 
@@ -52,7 +59,6 @@ export const Login: React.FC = () => {
                 <Grid sx={{ maxWidth:'350px', mx:'auto', p: 4, borderRadius: 5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt: 2 }}>
                       <Grid container spacing={ 3 }>
                             <Grid item xs={ 12 }>
-                                
                                 <Chip
                                     label={ message }
                                     color='error'
@@ -70,7 +76,6 @@ export const Login: React.FC = () => {
                                     variant='outlined'
                                     sx={{ display: welcome ? 'flex' : 'none' , mt: 1 }}
                                 />
-
                             </Grid>
 
                             <Grid item xs={ 12 } >
@@ -110,11 +115,11 @@ export const Login: React.FC = () => {
                             </Grid>
 
                             <Grid item xs={ 12 } display='flex' justifyContent='end'>
-                                    <Link component='span'>
-                                        <Typography variant='body2' color='black'>
-                                            Don&apos;t have an account? Sign Up
-                                        </Typography>
-                                    </Link>
+                                <Link component='span'>
+                                    <Typography variant='body2' color='black'>
+                                        Don&apos;t have an account? Sign Up
+                                    </Typography>
+                                </Link>
                             </Grid>
 
                         </Grid>

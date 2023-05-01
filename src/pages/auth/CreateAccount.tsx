@@ -30,7 +30,6 @@ export const CreateAccount: React.FC = () => {
             // console.log(data);
             setWelcome(true);
             setMessage(data.msg);
-
             setTimeout(()=> {
                 setWelcome(false)
                 navigate('/login');

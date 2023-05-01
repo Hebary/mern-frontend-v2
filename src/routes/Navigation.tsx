@@ -6,7 +6,7 @@ import { NewProject } from "../pages/projects";
 
 export const Navigation: React.FC = () => {
     return (
-      <BrowserRouter>
+      // <BrowserRouter>
           <Routes>
               <Route path="/" element ={ <IndexPage/> }/>
               <Route path="/login" element ={ <Login/> }/>
@@ -14,6 +14,6 @@ export const Navigation: React.FC = () => {
               <Route path="/new-project" element ={ <NewProject/> }/>
           </Routes>
   
-      </BrowserRouter>
+      // </BrowserRouter>
     );
   };
