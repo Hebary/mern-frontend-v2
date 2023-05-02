@@ -23,8 +23,11 @@ export const NewProject: React.FC = () => {
     const onCreateProject = async (projectData: FormData) => {
         createProject(projectData);
         setAlert(true);
-        setTimeout(() => setAlert(false), 1000);
-        navigate('/projects');
+
+        setTimeout(() => {
+            setAlert(false)
+            navigate('/projects');
+    }, 1500);
     }
 
     return (
