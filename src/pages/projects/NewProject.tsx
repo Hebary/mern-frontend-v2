@@ -1,45 +1,50 @@
-import {  useState } from 'react';
-import { Box, Button, Chip, Grid, Link, TextField, Typography, RadioGroup, Select, InputLabel, Input } from '@mui/material';
-import { ErrorOutline } from '@mui/icons-material';
-import { AuthLayout } from '../../components/layout';
+import { useState } from 'react';
+import { Box, Button, Chip, Grid, TextField, Typography, Input } from '@mui/material';
+import { CheckCircleOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
+import { AuthLayout } from '../../components/layout';
+import { useProjects } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
     name       : string;
     client     : string;
     description: string;
-    status     ?: string;
     deliverDate: string;
 }
 
 export const NewProject: React.FC = () => {
+    const { createProject } = useProjects();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const [error, setError] = useState(false);
-    const [status, setStatus] = useState('');
+    const [ alert, setAlert ] = useState(false);
     
-    const onCreateProduct = async ({name, client, description, status, deliverDate}:FormData) => {
-        console.log({name, client, description, status, deliverDate});
+    const navigate = useNavigate();
+
+    const onCreateProject = async (projectData: FormData) => {
+        createProject(projectData);
+        setAlert(true);
+        setTimeout(() => setAlert(false), 1000);
+        navigate('/projects');
     }
-  
+
     return (
         <AuthLayout title='New Project'>
           <Box maxWidth={'350px'} display={'flex'} className='fadeInUp' mx='auto'>
               <Typography color='info.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>New</Typography>
               <Typography color='primary.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>Project</Typography>
           </Box>
-            <form  className='fadeInUp' onSubmit={ handleSubmit(onCreateProduct) }>
+            <form  className='fadeInUp' onSubmit={ handleSubmit(onCreateProject) }>
                 <Grid sx={{ maxWidth:'420px', mx:'auto', p:4, borderRadius:5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt:1 }}>
                       <Grid container spacing={ 3 }>
                             <Grid item xs={ 12 }>
                                 
                                 <Chip
-                                    
-                                    label='All Fields are required'
-                                    color='error'
-                                    className='fadeIn'
-                                    icon= {<ErrorOutline/>}
+                                    label='Project succesfully created'
+                                    color='success'
+                                    className='fadeInUp'
+                                    icon= {< CheckCircleOutline/>}
                                     variant='outlined'
-                                    sx={{ display: error ? 'flex' : 'none' , mt: 1 }}
+                                    sx={{ display: alert ? 'flex' : 'none' , mt: 1 }}
                                 />
 
                             </Grid>
@@ -112,7 +117,8 @@ export const NewProject: React.FC = () => {
                                     sx={{my:'2px', py:2, px:1}} 
                                     {...register('deliverDate',{
                                         required: 'Deliver Date is required',
-                                    })}
+                                    }
+                                )}
                                 />
                             </Grid>
 

@@ -1,5 +1,7 @@
 import { useReducer } from 'react';
 import { ProjectsContext, projectsReducer } from './';
+import { pmApi } from '../../config';
+import { Project } from '../../interfaces';
 
 
 interface Props {
@@ -18,12 +20,31 @@ export const ProjectsProvider: React.FC<Props> = ({children}) => {
 
     const [state, dispatch] = useReducer(projectsReducer, Projects_INITIAL_STATE);
 
-   return (
-    <ProjectsContext.Provider
-        value={{
-                ...state
-            }}>
-        {children}
-    </ProjectsContext.Provider>
+    const createProject  = async (project: Project) => {
+    
+        try {
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+
+            const { data } = await pmApi.post('/projects', project , config);
+            console.log(data);
+            
+        } catch (error) {
+            console.log({error});
+        }
+    }
+
+    return ( 
+        <ProjectsContext.Provider
+            value={{
+                    ...state,
+                    createProject
+                }}>
+            {children}
+        </ProjectsContext.Provider>
     )
 }
