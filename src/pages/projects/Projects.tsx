@@ -1,9 +1,15 @@
 import { grey } from "@mui/material/colors";
-import { Layout } from "../components/layout"
+import { Layout } from "../../components/layout"
 import { Box, Grid, Typography } from '@mui/material';
+import { useProjects } from "../../hooks";
 
 
-export const IndexPage: React.FC = () => {
+export const Projects: React.FC = () => {
+
+   const { property } = useProjects();
+ 
+   console.log(property);
+
    return (
         <Layout>
            <Typography variant='h4' sx={{fontWeight:300}} className='red-hat-font'>My projects</Typography>

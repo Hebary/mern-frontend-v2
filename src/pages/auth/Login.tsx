@@ -7,6 +7,7 @@ import { utils } from '../../utils';
 import { useAuth } from '../../hooks';
 import { User } from '../../interfaces';
 import { pmApi } from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
     email    : string;
@@ -20,6 +21,7 @@ export const Login: React.FC = () => {
     const [ welcome, setWelcome ] = useState(false);
     const [ message, setMessage ] = useState('');
 
+    const navigate = useNavigate();
 
     const { setUserSession } = useAuth();
 
@@ -31,13 +33,13 @@ export const Login: React.FC = () => {
             setWelcome(true);
 
             localStorage.setItem('token', data.token);
-
-            setTimeout(()=> {
-                setWelcome(false)
-            },2200);
             
             setUserSession(data as User);
-
+            setTimeout(() => {
+                setWelcome(false)
+                navigate('/projects');
+            }, 1000);
+            
         } catch (error: unknown) {
 
             console.log({error});
@@ -51,7 +53,7 @@ export const Login: React.FC = () => {
     }
 
     return (
-        <AuthLayout title='Sign In Page'>
+        <AuthLayout title='Login Page'>
           <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
               <Typography color='info.main' variant='h3' component='h1' sx={{ textAlign:'justify', ml:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>Log in</Typography>
               <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>and manage your projects</Typography>
