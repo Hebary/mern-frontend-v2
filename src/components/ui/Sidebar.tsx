@@ -35,7 +35,7 @@ export const Sidebar: React.FC = () => {
     }
 
     const navigateTo = (path: string) => { 
-      console.log(path);
+      navigate(path);
     }
 
     
@@ -67,7 +67,7 @@ export const Sidebar: React.FC = () => {
 
                 <ListItemButton 
                     sx={{ display: { xs: '', sm: 'none' } }} 
-                    onClick={ ()=> navigateTo('/') }
+                    onClick={ () => navigateTo('/projects') }
                 >
                     <ListItemIcon>
                         <CategoryOutlined/>
@@ -76,7 +76,7 @@ export const Sidebar: React.FC = () => {
                 </ListItemButton>
             
                 <ListItemButton
-                        onClick={ () => navigateTo('/admin/products')}
+                        onClick={ () => navigateTo('/new-project')}
                     >
                         <ListItemIcon>
                             <AddCircleOutlineRounded/>

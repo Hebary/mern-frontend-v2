@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Box, Button, Chip, Grid, TextField, Typography, Input } from '@mui/material';
 import { CheckCircleOutline } from '@mui/icons-material';
-import { useForm } from 'react-hook-form';
-import { AuthLayout } from '../../components/layout';
-import { useProjects } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Layout } from '../../components/layout';
+import { useProjects } from '../../hooks';
 
 type FormData = {
     name       : string;
@@ -31,8 +31,8 @@ export const NewProject: React.FC = () => {
     }
 
     return (
-        <AuthLayout title='New Project'>
-          <Box maxWidth={'350px'} display={'flex'} className='fadeInUp' mx='auto'>
+        <Layout title='New Project'>
+          <Box maxWidth={'350px'} display={'flex'} className='fadeInUp' m='20px auto 0'>
               <Typography color='info.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>New</Typography>
               <Typography color='primary.main' variant='h3' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>Project</Typography>
           </Box>
@@ -98,21 +98,6 @@ export const NewProject: React.FC = () => {
                                     variant='filled' 
                                     label='Description' 
                                 />
-                                {/* <RadioGroup sx={{mb:2}}>
-                                    <InputLabel sx={{ fontWeight:400, fontSize:15, ml:.5 }}>Priority Level</InputLabel>
-                                    <Select 
-                                        value={status}
-                                        onChange={(e)=>setStatus(e.target.value)}
-                                        // {...register('status',{
-                                        //     required: 'Status is required',
-
-                                        // })}
-                                    >
-                                        <option style={{cursor: 'pointer'}} value={'Low'} >Low</option>
-                                        <option style={{cursor: 'pointer'}} value={'Medium'} >Medium</option>
-                                        <option style={{cursor: 'pointer'}} value={'High'} >High</option>
-                                    </Select>
-                                </RadioGroup> */}
 
                                 <Input 
                                     type='date'
@@ -133,7 +118,7 @@ export const NewProject: React.FC = () => {
                         </Grid>
                     </Grid>
             </form>
-        </AuthLayout>
+        </Layout>
     )
 }
 

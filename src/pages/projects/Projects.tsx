@@ -2,6 +2,7 @@ import { Layout } from "../../components/layout"
 import { Project } from "../../components/projects"
 import { Grid, Typography } from '@mui/material';
 import { useProjects } from "../../hooks";
+import { grey } from "@mui/material/colors";
 
 
 export const Projects: React.FC = () => {
@@ -13,10 +14,17 @@ export const Projects: React.FC = () => {
            <Typography variant='h4' sx={{fontWeight:300}} className='red-hat-font'>My projects</Typography>
            <Grid container display='flex' mt={2} flexDirection='column' >
 
-               { projects.map( project => (
-                  <Project key={project._id} project={project}/>
-               ))}
-               
+            {  projects.length > 0 ? projects.map( project =>
+                  <Project key={project._id} project={project} />
+               )
+               : 
+               (  
+                  <Grid sx={{ my:1, borderRadius:3, p:3, ml:2, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[200] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
+                     <Typography variant='body1' sx={{fontWeight:300}} className='red-hat-font'>You don't have any projects yet</Typography>
+                  </Grid>
+               )
+            }
+
             </Grid> 
         </Layout>
     )

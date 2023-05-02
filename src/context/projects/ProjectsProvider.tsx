@@ -9,12 +9,10 @@ interface Props {
 }
 
 export interface ProjectsState {
-    property: boolean;
     projects: Project[];
 }
 
 const Projects_INITIAL_STATE: ProjectsState = {
-   property: false,
    projects:[]
 }
 
@@ -58,7 +56,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             }
 
             const { data } = await pmApi.post<Project>('/projects', project , config);
-            
             dispatch({type: '[PROJECTS]-ADD_PROJECT', payload: data});
 
         } catch (error) {

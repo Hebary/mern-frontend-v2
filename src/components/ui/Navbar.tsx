@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornment } from '@mui/material';
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
 import { UiContext } from '../../context/ui';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -10,7 +11,7 @@ import { UiContext } from '../../context/ui';
 export const Navbar: React.FC = () => {
 
     const { toggleMenu } = useContext(UiContext);
-
+    const navigate = useNavigate();
     const [search, setSearch] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
 
@@ -22,7 +23,7 @@ export const Navbar: React.FC = () => {
     return (
         <AppBar>
             <Toolbar>
-                    <Link display='flex' underline='none' sx={{ cursor:'pointer' }} >
+                    <Link display='flex' underline='none' sx={{ cursor:'pointer' }} onClick={() => navigate('/projects')} >
                         <Box display='flex'>
                           <CategoryOutlined sx={{ fontSize: '30px' }}/>
                           <Box>
@@ -35,10 +36,8 @@ export const Navbar: React.FC = () => {
                 <Box flex={1}/>
 
                 <Box gap={3} className='red-hat-font' sx={{borderRadius:10, display: isSearchVisible ? 'none' : { xs: 'none', sm: 'flex' } }}>
-                        <Link underline='none' className='red-hat-font li'  sx={{ fontSize: 16 ,cursor: 'pointer'}}>
-                          {/* <Button color={ 'primary' }> */}
-                                Projects
-                          {/* </Button> */}
+                        <Link underline='none' className='red-hat-font li' onClick={() => navigate('/projects')}  sx={{ fontSize: 16 ,cursor: 'pointer'}}>
+                            Projects
                         </Link>
                 </Box>
 
