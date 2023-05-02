@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornment } from '@mui/material';
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
-import { UiContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
+import { UiContext } from '../../context/ui';
 
 
 

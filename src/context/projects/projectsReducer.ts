@@ -5,6 +5,7 @@ import { Project } from '../../interfaces';
 type ProjectsActionType = 
 | {type: '[PROJECTS]-SET_PROJECTS', payload: Project[]}
 | {type: '[PROJECTS]-ADD_PROJECT', payload: Project}
+| {type: '[PROJECTS]-SET_PROJECT', payload: Project}
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {
@@ -20,7 +21,12 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
           return{
             ...state,
             projects: [...state.projects, action.payload]
-        }  
+          }
+        case '[PROJECTS]-SET_PROJECT':
+          return{ 
+            ...state,
+            project: action.payload
+          }  
 
     default: 
             return state; 

@@ -12,7 +12,7 @@ export const Projects: React.FC = () => {
    return (
         <Layout>
            <Typography variant='h4' sx={{fontWeight:300}} className='red-hat-font'>My projects</Typography>
-           <Grid container display='flex' mt={2} flexDirection='column' >
+           <Grid container display='flex' mt={2} flexDirection='column' className='fadeInUp' >
 
             {  projects.length > 0 ? projects.map( project =>
                   <Project key={project._id} project={project} />

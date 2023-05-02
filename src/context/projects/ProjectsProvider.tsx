@@ -10,10 +10,12 @@ interface Props {
 
 export interface ProjectsState {
     projects: Project[];
+    project : Project | undefined;
 }
 
 const Projects_INITIAL_STATE: ProjectsState = {
-   projects:[]
+   projects:[],
+   project: undefined
 }
 
 export const ProjectsProvider: React.FC<Props> = ({ children }) => {
@@ -23,13 +25,15 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
     // Get user projects and set them in the state
     useEffect(() => {
         const getUserProjects = async () => {
-            const config = {
-                headers: {
-                    'Content-Type' : 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            }
             try {
+                const token = localStorage.getItem('token');
+                if(!token) return;
+                const config = {
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
                 const { data } = await pmApi.get<Project[]>('/projects', config);
                 
                 dispatch({type: '[PROJECTS]-SET_PROJECTS', payload: data});
@@ -44,14 +48,15 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
 
 
 
-
     const createProject  = async (project: Project) => {
     
         try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
             const config = {
                 headers: {
                     'Content-Type' : 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 }
             }
 
@@ -63,13 +68,32 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    const getProjectById = async (id: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi<Project>(`/projects/${id}`, config);
+            dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: data });
+
+        } catch (error) {
+            console.log({error});
+        }
+    }
+
     return ( 
         <ProjectsContext.Provider
             value={{
                     ...state,
+                    projects: state.projects,
+                    project: state.project,
                     createProject,
-                    projects: state.projects
-
+                    getProjectById,
                 }}>
             {children}
         </ProjectsContext.Provider>
