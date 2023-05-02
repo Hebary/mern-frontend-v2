@@ -5,7 +5,8 @@ import { Project } from '../../interfaces';
 type ProjectsActionType = 
 | {type: '[PROJECTS]-SET_PROJECTS', payload: Project[]}
 | {type: '[PROJECTS]-ADD_PROJECT', payload: Project}
-| {type: '[PROJECTS]-SET_PROJECT', payload: Project}
+| {type: '[PROJECTS]-SET_PROJECT', payload: Project | undefined}
+| {type: '[PROJECTS]-UPDATE_PROJECT', payload: Project}
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {
@@ -26,7 +27,12 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
           return{ 
             ...state,
             project: action.payload
-          }  
+          }
+        case '[PROJECTS]-UPDATE_PROJECT': 
+          return{
+            ...state,
+            projects: state.projects.map(project => project._id === action.payload._id ? action.payload : project)
+          } 
 
     default: 
             return state; 

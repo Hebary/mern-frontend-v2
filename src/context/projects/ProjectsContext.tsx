@@ -7,6 +7,7 @@ interface ContextProps {
     project: Project | undefined;
     createProject: (project: Project) => void;
     getProjectById: (id: string) => void;
+    updateProject: (project: Project) => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

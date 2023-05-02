@@ -86,6 +86,26 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    const updateProject = async (project: Project) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.put<Project>(`/projects/${state.project?._id}`, project, config);
+            console.log(data);
+            dispatch({ type: '[PROJECTS]-UPDATE_PROJECT', payload: data });
+            //clean the state of previous project
+            dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: Projects_INITIAL_STATE.project });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return ( 
         <ProjectsContext.Provider
             value={{
@@ -94,6 +114,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     project: state.project,
                     createProject,
                     getProjectById,
+                    updateProject
                 }}>
             {children}
         </ProjectsContext.Provider>
