@@ -30,7 +30,7 @@ export const ProjectPage: React.FC = () => {
                             <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', ml: 1, letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
                             <Link to={`/projects/edition/${project?._id}`} style={{ marginTop:5, display:'block' }}>
                                 <IconButton >
-                                    <EditOutlined sx={{color:'info.main',  fontSize:'25px'}}/>
+                                    <EditOutlined sx={{color:'primary.main',  fontSize:'30px'}}/>
                                 </IconButton>
                             </Link>
                         </Box>

@@ -106,6 +106,25 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    const deleteProject = async (id: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.delete<Project>(`/projects/${id}`, config);
+            console.log(data);
+            dispatch({ type: '[PROJECTS]-DELETE_PROJECT', payload: id });
+            dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: Projects_INITIAL_STATE.project });
+        } catch (error) {
+            console.log({error});
+        }
+    }
+
     return ( 
         <ProjectsContext.Provider
             value={{
@@ -114,7 +133,8 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     project: state.project,
                     createProject,
                     getProjectById,
-                    updateProject
+                    updateProject,
+                    deleteProject
                 }}>
             {children}
         </ProjectsContext.Provider>

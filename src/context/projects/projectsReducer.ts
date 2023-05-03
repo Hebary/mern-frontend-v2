@@ -7,6 +7,7 @@ type ProjectsActionType =
 | {type: '[PROJECTS]-ADD_PROJECT', payload: Project}
 | {type: '[PROJECTS]-SET_PROJECT', payload: Project | undefined}
 | {type: '[PROJECTS]-UPDATE_PROJECT', payload: Project}
+| {type: '[PROJECTS]-DELETE_PROJECT', payload: string}
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {
@@ -32,6 +33,11 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
           return{
             ...state,
             projects: state.projects.map(project => project._id === action.payload._id ? action.payload : project)
+          }
+        case '[PROJECTS]-DELETE_PROJECT':
+          return{
+            ...state,
+            projects: state.projects.filter(project => project._id !== action.payload)
           } 
 
     default: 
