@@ -39,6 +39,11 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
           return{
             ...state,
             projects: state.projects.filter(project => project._id !== action.payload)
+          }
+        case '[PROJECTS]-ADD_TASK':
+          return {
+            ...state,
+            projects: state.projects.map(project => project._id === action.payload.project ? {...project, tasks: [...project.tasks, action.payload]} : project)
           } 
 
     default: 

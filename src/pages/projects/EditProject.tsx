@@ -5,11 +5,12 @@ import { CheckCircleOutline, DeleteOutlineRounded } from "@mui/icons-material"
 import { Layout } from "../../components/layout"
 import { useProjects } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import { Project } from '../../interfaces';
 
 type FormData = {
-    name       : string;
-    description: string;
-    client     : string;
+    name        : string;
+    description : string;
+    client      : string;
     deliveryDate: string;
 }
 
@@ -29,11 +30,10 @@ export const EditProject = () => {
     const [onDelete, setOnDelete] = useState(false);
     const navigate = useNavigate();
 
-    const onUpdateProject = async (projectData: FormData) => {
-        console.log(projectData)
+    const onUpdateProject = async (data: FormData) => {
         setAlert(true);
         setTimeout(() => { 
-            updateProject(projectData);
+            updateProject(data as Project);
             setAlert(false);
             navigate('/projects');
         },1500);

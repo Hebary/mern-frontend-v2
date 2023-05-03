@@ -6,6 +6,7 @@ import { useProjects, useUI } from "../../hooks";
 import { FullScreenLoading } from '../../components/ui';
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
+import { grey } from '@mui/material/colors';
 
 type FormData = {
     name        : string;
@@ -51,21 +52,34 @@ export const ProjectPage: React.FC = () => {
                 loading 
                     ? <FullScreenLoading/> 
                     : <> 
-                        <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:1 }} className='fadeInUp' >
-                            <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify',mt:1, letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
+                        <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
+                            <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
                             <Link to={`/projects/edition/${project?._id}`}>
                                 <Button
                                     variant='outlined'
                                     sx={{ py:0, textTransform:'capitalize', fontWeight:300, fontSize:'15px' }}
                                     endIcon={<EditOutlined sx={{ color:'primary.main',  fontSize:'30px' }}/> }
-                                 >Edit
+                                 >Edit Project
                                 </Button>
                             </Link>
                         </Box>
-                        <Box display={'flex'} alignItems={'center'} className='fadeInUp' >
-                            <Button variant='outlined' onClick={ toggleModal }  sx={{ mt:2, fontWeight:300 }} endIcon={<AddCircleOutlineRounded/>}>
+                        <Box display={'flex'} alignItems={'center'} mt={2} justifyContent='space-between' className='fadeInUp' >
+                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Tasks</Typography>
+                            <Button variant='outlined' onClick={ toggleModal }  sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<AddCircleOutlineRounded/>}>
                                 Add Task
                             </Button>
+                        </Box>
+                        <Box display={'flex'} flexDirection={'column'} gap={2} className='fadeInUp' >
+                            {project?.tasks.map(task => 
+                                <Grid sx={{ mb:2, mt:3, borderRadius:3, p:3, ml:2, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[200] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
+                                    <Box display='flex' alignItems='center' gap={1}>
+                                        <Typography variant='body1' sx={{fontWeight:500}} className='red-hat-font'>{ task.name }</Typography>
+                                        <Typography variant='body2' sx={{fontWeight:300}} className='red-hat-font'>{ task.description }</Typography>
+                                        <Typography variant='body2' sx={{fontWeight:300}} className='red-hat-font'>{ task.priority+' priority' }</Typography>
+                                    </Box>
+                                </Grid>
+                                )
+                            }
                         </Box>
 
                         <Modal
@@ -137,9 +151,10 @@ export const ProjectPage: React.FC = () => {
                                           id="demo-simple-select"
                                           label="Priority"
                                         >
-                                          <MenuItem value={'Low'}>Low</MenuItem>
-                                          <MenuItem value={'Medium'}>Medium</MenuItem>
-                                          <MenuItem value={'High'}>High</MenuItem>
+                                            { PRIORITY.map( priority => 
+                                                    <MenuItem value={priority}>{priority}</MenuItem>
+                                                )
+                                            }
                                         </Select>
 
                                     </FormControl>

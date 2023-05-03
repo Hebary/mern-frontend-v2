@@ -96,7 +96,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.put<Project>(`/projects/${state.project?._id}`, project, config);
+            const { data } = await pmApi.put<Project>(`/projects/${state.project?._id}`, project , config);
             console.log(data);
             dispatch({ type: '[PROJECTS]-UPDATE_PROJECT', payload: data });
             //clean the state of previous project
@@ -136,8 +136,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
             const { data } = await pmApi.post<Task>(`/task`, task, config);
-            console.log(data);
-            // dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
+            dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
         } catch (error) {
             console.log({error});
         }
