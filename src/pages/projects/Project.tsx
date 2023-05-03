@@ -7,6 +7,7 @@ import { FullScreenLoading } from '../../components/ui';
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { grey } from '@mui/material/colors';
+import { Task } from '../../components/projects';
 
 type FormData = {
     name        : string;
@@ -69,15 +70,9 @@ export const ProjectPage: React.FC = () => {
                                 Add Task
                             </Button>
                         </Box>
-                        <Box display={'flex'} flexDirection={'column'} gap={2} className='fadeInUp' >
+                        <Box display={'flex'} flexDirection={'column'} className='fadeInUp' >
                             {project?.tasks.map(task => 
-                                <Grid sx={{ mb:2, mt:3, borderRadius:3, p:3, ml:2, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[200] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
-                                    <Box display='flex' alignItems='center' gap={1}>
-                                        <Typography variant='body1' sx={{fontWeight:500}} className='red-hat-font'>{ task.name }</Typography>
-                                        <Typography variant='body2' sx={{fontWeight:300}} className='red-hat-font'>{ task.description }</Typography>
-                                        <Typography variant='body2' sx={{fontWeight:300}} className='red-hat-font'>{ task.priority+' priority' }</Typography>
-                                    </Box>
-                                </Grid>
+                                <Task task={task} key={task._id} />
                                 )
                             }
                         </Box>
@@ -151,10 +146,7 @@ export const ProjectPage: React.FC = () => {
                                           id="demo-simple-select"
                                           label="Priority"
                                         >
-                                            { PRIORITY.map( priority => 
-                                                    <MenuItem value={priority}>{priority}</MenuItem>
-                                                )
-                                            }
+                                            { PRIORITY.map( priority => <MenuItem  key={ priority } value={priority}>{priority}</MenuItem>) }
                                         </Select>
 
                                     </FormControl>

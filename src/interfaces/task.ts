@@ -4,4 +4,5 @@ export interface Task {
     priority: string;
     deliveryDate: string;
     project: string;
+    _id?: string;
 }

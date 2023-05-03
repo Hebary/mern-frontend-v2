@@ -43,7 +43,7 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
         case '[PROJECTS]-ADD_TASK':
           return {
             ...state,
-            projects: state.projects.map(project => project._id === action.payload.project ? {...project, tasks: [...project.tasks, action.payload]} : project)
+            project: state.project && { ...state.project, tasks: [...state.project.tasks, action.payload] } 
           } 
 
     default: 

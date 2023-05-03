@@ -79,6 +79,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
             const { data } = await pmApi<Project>(`/projects/${id}`, config);
+            
             dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: data });
 
         } catch (error) {
