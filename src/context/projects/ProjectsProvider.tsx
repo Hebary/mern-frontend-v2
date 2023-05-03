@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from 'react';
 import { ProjectsContext, projectsReducer } from './';
 import { pmApi } from '../../config';
-import { Project } from '../../interfaces';
+import { Project, Task } from '../../interfaces';
 
 
 interface Props {
@@ -125,6 +125,25 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    const createNewTask = async (task: Task) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.post<Task>(`/task`, task, config);
+            console.log(data);
+            // dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
+        } catch (error) {
+            console.log({error});
+        }
+    
+    }
+
     return ( 
         <ProjectsContext.Provider
             value={{
@@ -134,7 +153,8 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     createProject,
                     getProjectById,
                     updateProject,
-                    deleteProject
+                    deleteProject,
+                    createNewTask
                 }}>
             {children}
         </ProjectsContext.Provider>

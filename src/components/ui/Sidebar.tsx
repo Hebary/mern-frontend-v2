@@ -1,23 +1,15 @@
-import { useContext, useState } from "react";
-//Components
-import { 
-    Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography 
-} from "@mui/material";
-// Icons
-import { 
-    AddCircleOutlineRounded,
-    CategoryOutlined, LoginOutlined, SearchOutlined,  
-} from "@mui/icons-material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { AddCircleOutlineRounded, CategoryOutlined, LoginOutlined, SearchOutlined } from "@mui/icons-material";
+import { useAuth, useUI } from "../../hooks";
 
-import { UiContext } from "../../context/ui";
-import { useAuth } from "../../hooks";
 
 
 
 export const Sidebar: React.FC = () => {
 
-    const { isMenuOpen, toggleMenu } = useContext(UiContext);
+    const { isMenuOpen, toggleMenu } = useUI();
     const { signOut} = useAuth();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();

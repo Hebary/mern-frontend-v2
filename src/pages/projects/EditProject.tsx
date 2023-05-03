@@ -135,7 +135,7 @@ export const EditProject = () => {
                             </Grid>
 
                             <Grid item xs={ 12 } display='flex' justifyContent='center'>
-                                <Button type='submit' color='info' variant='contained' fullWidth className='circular-btn' size='large' >
+                                <Button type='submit' color='info' variant='contained' fullWidth size='large' >
                                     Update Project
                                 </Button>
                             </Grid>

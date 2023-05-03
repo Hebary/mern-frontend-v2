@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Project } from '../../interfaces';
+import { Project, Task } from '../../interfaces';
 
 
 interface ContextProps {
@@ -9,6 +9,7 @@ interface ContextProps {
     getProjectById: (id: string) => void;
     updateProject: (project: Project) => void;
     deleteProject: (id: string) => void;
+    createNewTask: (task: Task) => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

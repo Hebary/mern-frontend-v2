@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornment } from '@mui/material';
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { UiContext } from '../../context/ui';
+import { useUI } from '../../hooks';
 
 
 
@@ -10,7 +10,7 @@ import { UiContext } from '../../context/ui';
 
 export const Navbar: React.FC = () => {
 
-    const { toggleMenu } = useContext(UiContext);
+    const { toggleMenu } = useUI();
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);

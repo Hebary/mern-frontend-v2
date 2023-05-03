@@ -1,5 +1,5 @@
 import { ProjectsState } from './';
-import { Project } from '../../interfaces';
+import { Project, Task } from '../../interfaces';
 
 
 type ProjectsActionType = 
@@ -8,6 +8,7 @@ type ProjectsActionType =
 | {type: '[PROJECTS]-SET_PROJECT', payload: Project | undefined}
 | {type: '[PROJECTS]-UPDATE_PROJECT', payload: Project}
 | {type: '[PROJECTS]-DELETE_PROJECT', payload: string}
+| {type: '[PROJECTS]-ADD_TASK', payload: Task}
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {

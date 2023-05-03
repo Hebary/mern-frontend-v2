@@ -8,18 +8,24 @@ interface Props {
 
 export interface UiState {
     isMenuOpen: boolean;
+    isModalOpen: boolean;
 }
 
-const Ui_INITIAL_STATE: UiState = {
-   isMenuOpen: false
+const UI_INITIAL_STATE: UiState = {
+   isMenuOpen: false,
+   isModalOpen: false
 }
 
 export const UiProvider: React.FC<Props> = ({ children }) => {
 
-    const [state, dispatch] = useReducer(uiReducer, Ui_INITIAL_STATE);
+    const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE);
 
     const toggleMenu = () => {
-        dispatch({type: '[Ui]-TOGGLE_MENU'})
+        dispatch({type: '[UI]-TOGGLE_MENU'})
+    }
+
+    const toggleModal = () => {
+        dispatch({type: '[UI]-TOGGLE_MODAL'})
     }
 
 return (
@@ -28,6 +34,7 @@ return (
                 ...state,
                 // methods:
                 toggleMenu,
+                toggleModal,
                 
             }}>
         {children}
