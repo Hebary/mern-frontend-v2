@@ -4,7 +4,7 @@ import { Box, Button, Chip, FormControl, Grid, Input, InputLabel, MenuItem, Moda
 import { Layout } from "../../components/layout"
 import { useProjects, useUI } from "../../hooks";
 import { FullScreenLoading } from '../../components/ui';
-import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined } from '@mui/icons-material';
+import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { Task } from '../../components/projects';
 
@@ -64,7 +64,7 @@ export const ProjectPage: React.FC = () => {
                             </Link>
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
-                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Tasks</Typography>
+                            <Typography variant='h6' component='h2' sx={{ fontWeight:500, textTransform:'capitalize' }}>Tasks</Typography>
                             <Button variant='outlined' onClick={ toggleModal }  sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<AddCircleOutlineRounded/>}>
                                 Add Task
                             </Button>
@@ -75,6 +75,15 @@ export const ProjectPage: React.FC = () => {
                                     <Task task={task}  />
                                 </Link>
                                 ))}
+                        </Box>
+
+                        <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
+                            <Typography variant='h6' component='h2' sx={{ fontWeight:500, textTransform:'capitalize' }}>Contributors</Typography>
+                            <Link to={`/projects/new-contributor/${project?._id}`} style={{textDecoration:'none'}}>
+                                <Button variant='outlined' sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<GroupAdd/>}>
+                                    Add Contributor
+                                </Button>
+                            </Link>
                         </Box>
 
                         <Modal

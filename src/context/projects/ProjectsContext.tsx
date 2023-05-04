@@ -14,6 +14,8 @@ interface ContextProps {
     updateTask: (task: Task) => void;
     deleteTask: (id: string) => void;
     getTaskById: (id: string) => void;
+    findContributor: (contributorEmail: string) => void;
+    cleanState: () => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);
