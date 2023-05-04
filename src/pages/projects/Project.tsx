@@ -6,7 +6,6 @@ import { useProjects, useUI } from "../../hooks";
 import { FullScreenLoading } from '../../components/ui';
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import { grey } from '@mui/material/colors';
 import { Task } from '../../components/projects';
 
 type FormData = {
@@ -53,28 +52,25 @@ export const ProjectPage: React.FC = () => {
                 loading 
                     ? <FullScreenLoading/> 
                     : <> 
-                        <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
+                        <Box display={'flex'} justifyContent={'start'} gap={1} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
                             <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
                             <Link to={`/projects/edition/${project?._id}`}>
                                 <Button
-                                    variant='outlined'
+                                    // variant=''
                                     sx={{ py:0, textTransform:'capitalize', fontWeight:300, fontSize:'15px' }}
-                                    endIcon={<EditOutlined sx={{ color:'primary.main',  fontSize:'30px' }}/> }
+                                    startIcon={<EditOutlined sx={{ color:'primary.main' }}/> }
                                  >Edit Project
                                 </Button>
                             </Link>
                         </Box>
-                        <Box display={'flex'} alignItems={'center'} mt={2} justifyContent='space-between' className='fadeInUp' >
+                        <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
                             <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Tasks</Typography>
                             <Button variant='outlined' onClick={ toggleModal }  sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<AddCircleOutlineRounded/>}>
                                 Add Task
                             </Button>
                         </Box>
                         <Box display={'flex'} flexDirection={'column'} className='fadeInUp' >
-                            {project?.tasks.map(task => 
-                                <Task task={task} key={task._id} />
-                                )
-                            }
+                            {project?.tasks.map(task => <Task task={task} key={task._id} />)}
                         </Box>
 
                         <Modal
