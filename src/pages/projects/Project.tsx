@@ -7,6 +7,7 @@ import { FullScreenLoading } from '../../components/ui';
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { Task } from '../../components/projects';
+import { grey } from '@mui/material/colors';
 
 type FormData = {
     name        : string;
@@ -85,7 +86,16 @@ export const ProjectPage: React.FC = () => {
                                 </Button>
                             </Link>
                         </Box>
-
+                        {  
+                        project?.contributors?.length ? 
+                            project?.contributors?.map(contributor => (   
+                            <Grid key={contributor?._id} sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[100] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
+                                <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
+                                <Typography color='primary.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
+                            </Grid> 
+                            )) 
+                            : <Typography variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>No contributors yet</Typography>
+                        }
                         <Modal
                             open={ isModalOpen }
                             onClose={ toggleModal }

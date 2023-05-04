@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from 'react';
 import { ProjectsContext, projectsReducer } from './';
 import { pmApi } from '../../config';
-import { Project, Task } from '../../interfaces';
+import { Project, Task, User } from '../../interfaces';
 
 
 interface Props {
@@ -12,12 +12,14 @@ export interface ProjectsState {
     projects: Project[];
     project : Project | undefined;
     task: Task | undefined;
+    contributor: User | undefined;
 }
 
 const Projects_INITIAL_STATE: ProjectsState = {
    projects:[],
    project: undefined,
-   task: undefined
+   task: undefined,
+   contributor: undefined
 }
 
 export const ProjectsProvider: React.FC<Props> = ({ children }) => {
@@ -51,6 +53,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             dispatch({ type: '[PROJECTS]-SET_PROJECTS', payload:[]});
             dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: undefined});
             dispatch({ type: '[PROJECTS]-SET_TASK', payload: undefined});
+            dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: undefined});
         }
 
     const createProject  = async (project: Project) => {
@@ -206,8 +209,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
-    const findContributor = async(contributorEmail: string) => {
-        console.log(contributorEmail)
+    const findContributor = async(email: string) => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return;
@@ -217,8 +219,27 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post(`/projects/contributors`, contributorEmail, config);
+            const { data } = await pmApi.post('/projects/contributors', {email}, config);
+            dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: data });
+        } catch (error: any) {
+            console.log(error);
+            return error.response.data.message
+        }
+    }
+
+    const addContributor = async(email: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.post(`/projects/contributors/${state.project?._id}`, {email, id: state.project?._id}, config);
             console.log(data);
+            dispatch({ type: '[PROJECTS]-ADD_CONTRIBUTOR', payload: state.contributor as User });
         } catch (error) {
             console.log(error);
         }
@@ -231,6 +252,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     projects: state.projects,
                     project: state.project,
                     task: state.task,
+                    contributor: state.contributor,
                     createProject,
                     getProjectById,
                     updateProject,
@@ -240,7 +262,8 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     deleteTask,
                     getTaskById,
                     findContributor,
-                    cleanState
+                    addContributor,
+                    cleanState,
                 }}>
             {children}
         </ProjectsContext.Provider>

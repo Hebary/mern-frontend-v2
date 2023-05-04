@@ -71,7 +71,7 @@ export const ProjectEditTask: React.FC = () => {
                             <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
-                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Task{ task?.name }</Typography>
+                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}><strong>Task:</strong> { task?.name }</Typography>
                             <Button startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{ fontWeight:300, textTransform:'capitalize' }}>
                                 Delete task
                             </Button>

@@ -1,4 +1,4 @@
-import { Task } from ".";
+import { Task, User } from ".";
 
 export interface Project {
     _id        ?: string;
@@ -7,5 +7,6 @@ export interface Project {
     deliveryDate: string;
     client      : string;
     tasks       : Task[];
+    contributors: User[];
 }
 

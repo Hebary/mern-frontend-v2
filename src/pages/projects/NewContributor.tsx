@@ -1,8 +1,13 @@
-import { Box, Button, FormControl, Grid, TextField, Typography } from "@mui/material"
+import { Box, Button, Chip, FormControl, Grid, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form";
 import { Layout } from "../../components/layout"
 import { emailValidator } from '../../utils/isValidEmail';
 import { useProjects } from "../../hooks";
+import { grey } from "@mui/material/colors";
+import { CheckCircleOutline } from "@mui/icons-material";
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { User } from "../../interfaces";
 
 type FormData = {
     email:string;
@@ -10,20 +15,43 @@ type FormData = {
 
 export const NewContributor: React.FC = () => {
     
-    const { findContributor } = useProjects();
+    const { findContributor, contributor, addContributor, project } = useProjects();
     const { handleSubmit, register, formState:{errors} } = useForm<FormData>()
-   
-    const onSubmitContributor = async ({ email }: FormData) => {
+    
+    const [alert, setAlert] = useState(false);
+    const navigate = useNavigate();
+    const onSubmitContributor = ({ email }: FormData) => {
         findContributor(email);
     }
-   
+
+    const onAddContributor = async () => {
+        addContributor(contributor?.email as string);
+        setAlert(true);
+        setTimeout(() => {
+            setAlert(false)
+            navigate(`/projects/${project?._id}`);
+        }, 1500);
+    }
+
     return (
         <Layout>
             <Box maxWidth={'300px'} display={'flex'} className='fadeInUp' m='40px auto 0'>
                 <Typography color='info.main' variant='h4' component='h2' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>New</Typography>
                 <Typography color='primary.main' variant='h4' component='h2' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>Contributor</Typography>
             </Box>
-            <Grid sx={{ maxWidth:'420px', mx:'auto', p:4, borderRadius:5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt:1 }}>
+            <Grid item xs={ 6 } m='10px auto'>
+                                
+                <Chip
+                    label='contributor succesfully added'
+                    color='success'
+                    className='fadeInUp'
+                    icon= {< CheckCircleOutline/>}
+                    variant='outlined'
+                    sx={{ display: alert ? 'flex' : 'none' , mt: 1 }}
+                    />
+            
+            </Grid>
+            <Grid sx={{ maxWidth:'420px', mb:4, mx:'auto', p:4, borderRadius:5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt:1 }}>
                 <form onSubmit={handleSubmit(onSubmitContributor)}>
                     <FormControl fullWidth>
                         <TextField
@@ -39,6 +67,12 @@ export const NewContributor: React.FC = () => {
                     </FormControl>
                 </form>
             </Grid>
+            { contributor as User && (
+                <Grid sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[100] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
+                    <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
+                    <Button type='submit' color='info' variant='contained' onClick={onAddContributor} size='small' >Add to project</Button>
+                </Grid> )
+            }
         </Layout>
     )
 }

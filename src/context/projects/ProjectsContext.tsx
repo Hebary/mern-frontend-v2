@@ -1,11 +1,12 @@
 import { createContext } from 'react';
-import { Project, Task } from '../../interfaces';
+import { Project, Task, User } from '../../interfaces';
 
 
 interface ContextProps {
     projects: Project[];
     project: Project | undefined;
     task: Task | undefined;
+    contributor: User | undefined;
     createProject: (project: Project) => void;
     getProjectById: (id: string) => void;
     updateProject: (project: Project) => void;
@@ -15,6 +16,7 @@ interface ContextProps {
     deleteTask: (id: string) => void;
     getTaskById: (id: string) => void;
     findContributor: (contributorEmail: string) => void;
+    addContributor: (contributorEmail: string) => void;
     cleanState: () => void;
 }
 
