@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Layout } from '../../components/layout';
 import { useProjects } from '../../hooks';
+import { Project } from '../../interfaces';
 
 type FormData = {
     name       : string;
@@ -21,7 +22,7 @@ export const NewProject: React.FC = () => {
     const navigate = useNavigate();
 
     const onCreateProject = async (projectData: FormData) => {
-        createProject(projectData);
+        createProject(projectData as Project);
         setAlert(true);
 
         setTimeout(() => {

@@ -12,41 +12,38 @@ type ProjectsActionType =
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {
-
-
-   switch (action.type) {
-        case '[PROJECTS]-SET_PROJECTS':
-            return{
-              ...state,
-              projects: action.payload
-          }
-        case '[PROJECTS]-ADD_PROJECT':
-          return{
-            ...state,
-            projects: [...state.projects, action.payload]
-          }
-        case '[PROJECTS]-SET_PROJECT':
-          return{ 
-            ...state,
-            project: action.payload
-          }
-        case '[PROJECTS]-UPDATE_PROJECT': 
-          return{
-            ...state,
-            projects: state.projects.map(project => project._id === action.payload._id ? action.payload : project)
-          }
-        case '[PROJECTS]-DELETE_PROJECT':
-          return{
-            ...state,
-            projects: state.projects.filter(project => project._id !== action.payload)
-          }
-        case '[PROJECTS]-ADD_TASK':
-          return {
-            ...state,
-            project: state.project && { ...state.project, tasks: [...state.project.tasks, action.payload] } 
-          } 
-
+  switch (action.type) {
+    case '[PROJECTS]-SET_PROJECTS':
+        return{
+          ...state,
+          projects: action.payload
+        }
+    case '[PROJECTS]-ADD_PROJECT':
+      return{
+        ...state,
+        projects: [...state.projects, action.payload]
+        }
+    case '[PROJECTS]-SET_PROJECT':
+      return{ 
+        ...state,
+        project: action.payload
+        }
+    case '[PROJECTS]-UPDATE_PROJECT': 
+      return{
+        ...state,
+        projects: state.projects.map(project => project._id === action.payload._id ? action.payload : project)
+        }
+    case '[PROJECTS]-DELETE_PROJECT':
+      return{
+        ...state,
+        projects: state.projects.filter(project => project._id !== action.payload)
+        }
+    case '[PROJECTS]-ADD_TASK':
+      return {
+        ...state,
+        project: state.project && { ...state.project, tasks: [...state.project.tasks, action.payload] } 
+        } 
     default: 
-            return state; 
+      return state; 
     }
 }
