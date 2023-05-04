@@ -11,11 +11,13 @@ interface Props {
 export interface ProjectsState {
     projects: Project[];
     project : Project | undefined;
+    task: Task | undefined;
 }
 
 const Projects_INITIAL_STATE: ProjectsState = {
    projects:[],
-   project: undefined
+   project: undefined,
+   task: undefined
 }
 
 export const ProjectsProvider: React.FC<Props> = ({ children }) => {
@@ -44,8 +46,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
         getUserProjects()
     }, []);
-
-
 
 
     const createProject  = async (project: Project) => {
@@ -137,11 +137,69 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
             const { data } = await pmApi.post<Task>(`/task`, task, config);
+            //next line will update the project in the state
             dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
         } catch (error) {
             console.log({error});
         }
-    
+    }
+
+    const getTaskById = async (id: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+
+            const { data } = await pmApi<Task>(`/task/${id}`, config);
+            dispatch({ type: '[PROJECTS]-SET_TASK', payload: data });
+        }catch (error) {
+            console.log({error});
+        }
+    }
+
+    const updateTask = async (task: Task) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+
+            const { data } = await pmApi.put<Task>(`/task/${state.task?._id}`, task, config);
+            dispatch({ type: '[PROJECTS]-UPDATE_TASK', payload: data });
+            dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
+
+        }catch (error) {
+            console.log({error});
+        }
+
+    }
+
+    const deleteTask = async (id: string) => {
+        try {
+            const token = localStorage.getItem('token');
+                if(!token) return;
+                const config = {
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+                const { data } = await pmApi.delete<Task>(`/task/${id}`, config);
+                console.log(data);
+                dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: id });
+                dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
+            } catch (error) {
+            console.log({error});
+        }
     }
 
     return ( 
@@ -150,11 +208,15 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     ...state,
                     projects: state.projects,
                     project: state.project,
+                    task: state.task,
                     createProject,
                     getProjectById,
                     updateProject,
                     deleteProject,
-                    createNewTask
+                    createNewTask,
+                    updateTask,
+                    deleteTask,
+                    getTaskById
                 }}>
             {children}
         </ProjectsContext.Provider>

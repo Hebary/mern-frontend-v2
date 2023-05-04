@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Box, Button, Chip, FormControl, Grid, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
-import { Layout } from "../../components/layout"
-import { useProjects, useUI } from "../../hooks";
-import { FullScreenLoading } from '../../components/ui';
-import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined } from '@mui/icons-material';
+import {  CheckCircleOutline, DeleteForeverOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
+import { useProjects, useUI } from "../../hooks";
+import { Layout } from "../../components/layout"
+import { FullScreenLoading } from '../../components/ui';
 import { Task } from '../../components/projects';
+import { Task as ITask} from '../../interfaces';
 
 type FormData = {
     name        : string;
@@ -17,64 +18,66 @@ type FormData = {
 
 const PRIORITY = ['Low', 'Medium', 'High'];
 
-export const ProjectPage: React.FC = () => {
+export const ProjectEditTask: React.FC = () => {
 
-    const { getProjectById, project, createNewTask } = useProjects();
+    const { project, getTaskById, task, updateTask, deleteTask } = useProjects();
 
     const { isModalOpen, toggleModal } = useUI();
-    const [loading, setLoading] = useState(false);
-    const [alert, setAlert] = useState(false);
+    const [ loading, setLoading ] = useState(false);
+    const [ alert, setAlert ] = useState(false);
     
-    const [priority, setPriority] = useState(PRIORITY[0]);
-    
-    const { id } = useParams();
-    
+    const { taskId } = useParams();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    
+    const [priority, setPriority] = useState(PRIORITY[0]);
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        defaultValues: {
+            name: task?.name,
+            description: task?.description,
+            deliveryDate: task?.deliveryDate,
+            priority: PRIORITY[0]
+        }
+    });
+
     useEffect(() => {
         setLoading(true);
-        getProjectById(id as string);
+        getTaskById(taskId as string);
         setTimeout(() => setLoading(false), 2000);
     }, [])
 
+    const navigate = useNavigate();
+
     const onSubmitTask = async( data: FormData ) => {
-        createNewTask({...data, priority, project: project?._id as string});
+        updateTask({...data, priority, project: project?._id as string});
         setAlert(true);
         setTimeout(() => {
             setAlert(false)
             toggleModal();
+            navigate(`/projects/${project?._id}`);
         }, 1500);
     }
 
+    const onDeleteTask = () => {
+        confirm('Are you sure you want to delete this task?') &&
+        deleteTask(taskId as string);
+        navigate(`/projects/${project?._id}`);
+    }
     return (
         <Layout>
             {
                 loading 
                     ? <FullScreenLoading/> 
                     : <> 
-                        <Box display={'flex'} justifyContent={'start'} gap={2} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
+                        <Box display={'flex'} justifyContent={'start'} gap={1} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
                             <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
-                            <Link to={`/projects/edition/${project?._id}`}>
-                                <Button
-                                    sx={{ py:0, textTransform:'capitalize', fontWeight:300, fontSize:'15px' }}
-                                    startIcon={<EditOutlined sx={{ color:'primary.main' }}/> }
-                                 >Edit Project
-                                </Button>
-                            </Link>
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
-                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Tasks</Typography>
-                            <Button variant='outlined' onClick={ toggleModal }  sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<AddCircleOutlineRounded/>}>
-                                Add Task
+                            <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}>Task{ task?.name }</Typography>
+                            <Button startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{ fontWeight:300, textTransform:'capitalize' }}>
+                                Delete task
                             </Button>
                         </Box>
-                        <Box display={'flex'} flexDirection={'column'} className='fadeInUp' >
-                                {project?.tasks.map(task => (
-                                <Link key={task._id} style={{textDecoration:'none'}} to={`task/${task._id}`}>
-                                    <Task task={task}  />
-                                </Link>
-                                ))}
+                        <Box display={'flex'} flexDirection={'column'} onClick={ toggleModal } className='fadeInUp' >
+                            <Task task={task as ITask} key={task?._id} showEdit={true} />
                         </Box>
 
                         <Modal
@@ -94,7 +97,7 @@ export const ProjectPage: React.FC = () => {
 
                                     <Grid item xs={ 12 }>
                                         <Chip
-                                            label='Task succesfully created'
+                                            label='Task succesfully updated'
                                             color='success'
                                             className='fadeInUp'
                                             icon= {< CheckCircleOutline/>}
@@ -162,7 +165,7 @@ export const ProjectPage: React.FC = () => {
 
                                     />
                                     <Button type='submit' color='info' variant='contained' fullWidth size='large' >
-                                        Add Task
+                                       Update Task
                                     </Button>
                                 </Box>
                             </form>

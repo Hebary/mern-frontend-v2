@@ -131,6 +131,7 @@ export const EditProject = () => {
                                         }
                                         )}
                                     fullWidth
+                                    error={!!errors.deliveryDate}
                                 />
                             </Grid>
 

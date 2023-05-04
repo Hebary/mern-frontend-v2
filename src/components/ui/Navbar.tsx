@@ -36,9 +36,9 @@ export const Navbar: React.FC = () => {
                 <Box flex={1}/>
 
                 <Box gap={3} className='red-hat-font' sx={{borderRadius:10, display: isSearchVisible ? 'none' : { xs: 'none', sm: 'flex' } }}>
-                        <Link underline='none' className='red-hat-font li' onClick={() => navigate('/projects')}  sx={{ fontSize: 16 ,cursor: 'pointer'}}>
-                            Projects
-                        </Link>
+                    <Link underline='none' className='red-hat-font li' onClick={() => navigate('/projects')}  sx={{ fontSize: 18 ,cursor: 'pointer'}}>
+                        Projects
+                    </Link>
                 </Box>
 
                 <Box flex={1}/>

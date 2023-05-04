@@ -1,7 +1,7 @@
 
 import { Routes, Route } from "react-router-dom";
 import { Login, CreateAccount } from "../pages/auth";
-import { NewProject, EditProject, ProjectPage, Projects } from "../pages/projects";
+import { NewProject, EditProject, ProjectPage, Projects, ProjectEditTask } from "../pages/projects";
 
 export const Navigation: React.FC = () => {
   return (
@@ -12,6 +12,7 @@ export const Navigation: React.FC = () => {
       <Route path="/new-project" element ={ <NewProject/> }/>
       <Route path="/projects/:id" element ={ <ProjectPage/> }/>
       <Route path="/projects/edition/:id" element ={ <EditProject/> }/>
+      <Route path="/projects/:id/task/:taskId" element ={ <ProjectEditTask/> }/>
     </Routes>
   );
 };
