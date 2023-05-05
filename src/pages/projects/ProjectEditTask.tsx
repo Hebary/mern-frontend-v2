@@ -8,6 +8,7 @@ import { Layout } from "../../components/layout"
 import { FullScreenLoading } from '../../components/ui';
 import { Task } from '../../components/projects';
 import { Task as ITask} from '../../interfaces';
+import { red } from '@mui/material/colors';
 
 type FormData = {
     name        : string;
@@ -47,7 +48,7 @@ export const ProjectEditTask: React.FC = () => {
     const navigate = useNavigate();
 
     const onSubmitTask = async( data: FormData ) => {
-        updateTask({...data, priority, project: project?._id as string});
+        updateTask({...data, priority, project: project?._id as string} as ITask);
         setAlert(true);
         setTimeout(() => {
             setAlert(false)
@@ -72,7 +73,7 @@ export const ProjectEditTask: React.FC = () => {
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
                             <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}><strong>Task:</strong> { task?.name }</Typography>
-                            <Button startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{ fontWeight:300, textTransform:'capitalize' }}>
+                            <Button startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{":hover":{color:'#FFF', bgcolor:red[700]}, fontWeight:300, textTransform:'capitalize' }}>
                                 Delete task
                             </Button>
                         </Box>
