@@ -38,7 +38,7 @@ export const ProjectPage: React.FC = () => {
     useEffect(() => {
         setLoading(true);
         getProjectById(id as string);
-        setTimeout(() => setLoading(false), 2000);
+        setTimeout(() => setLoading(false), 1000);
     }, [])
 
     const admin = useAdmin();
@@ -64,7 +64,7 @@ export const ProjectPage: React.FC = () => {
                     ? <FullScreenLoading/> 
                     : <> 
                         <Box display={'flex'} justifyContent={'start'} gap={2} alignItems={'center'} sx={{ borderBottom: '1px solid #ccc', py:2 }} className='fadeInUp' >
-                            <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 2, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
+                            <Typography color='info.main' variant='h5' component='h1' sx={{ textAlign:'justify', letterSpacing: 1, fontWeight: 300, textTransform:'capitalize' }}>{project?.name}</Typography>
                             
                         { admin && 
                             <Link to={`/projects/edition/${project?._id}`}>
@@ -87,11 +87,7 @@ export const ProjectPage: React.FC = () => {
                         <Box display={'flex'} flexDirection={'column'} className='fadeInUp' >
                             {
                                 project?.tasks.map(task => (
-                                    admin ?   
-                                        <Link key={task._id} style={{textDecoration:'none'}} to={`task/${task._id}`}>
-                                            <Task task={task}  />
-                                        </Link>
-                                    : <Task task={task} key={task._id}  />
+                                    <Task task={task} key={task._id}  />
                                     )
                                 )  
                             }
@@ -103,8 +99,8 @@ export const ProjectPage: React.FC = () => {
                             <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
                                 <Typography variant='h6' component='h2' sx={{ fontWeight:500, textTransform:'capitalize' }}>Contributors</Typography>
                                 <Link to={`/projects/new-contributor/${project?._id}`} style={{textDecoration:'none'}}>
-                                        <Button variant='outlined' sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} endIcon={<GroupAdd/>}>
-                                            Add Contributor
+                                        <Button variant='outlined' sx={{ textTransform:'capitalize', py:0, fontWeight:300 }} size='small' endIcon={<GroupAdd/>}>
+                                            Add 
                                         </Button>
                                 </Link>
                             </Box>
@@ -112,10 +108,10 @@ export const ProjectPage: React.FC = () => {
                             project?.contributors?.length ? 
                                 project?.contributors?.map(contributor => (   
                                     <Grid key={contributor?._id} 
-                                        sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[100] }, transition: 'all .3s ease-in-out' }} 
+                                        sx={{ display:'flex', alignItems:'center', flexWrap:'wrap', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[200] }, transition: 'all .3s ease-in-out' }} 
                                         item xs={12} md={10} className='fadeInUp' >
-                                        <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
-                                        <Typography color='primary.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
+                                        <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:1, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
+                                        <Typography color='primary.main' variant='body2' fontWeight={ 500 } sx={{ mr:1, letterSpacing:1, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
                                         { admin &&
                                             <IconButton
                                                     onClick={ () => onDeleteContributor(contributor?._id, contributor?.email) }

@@ -11,7 +11,7 @@ export const Projects: React.FC = () => {
 
    return (
         <Layout>
-           <Typography variant='h4' sx={{fontWeight:300}} className='red-hat-font'>My projects</Typography>
+           <Typography variant='h4' sx={{ mt:1, textTransform:'capitalize', fontWeight:300}} className='red-hat-font'>All projects</Typography>
            <Grid container display='flex' mt={2} flexDirection='column' className='fadeInUp' >
 
             {  projects.length ? projects.map( project =>
@@ -19,7 +19,7 @@ export const Projects: React.FC = () => {
                )
                : 
                (  
-                  <Grid sx={{ my:1, borderRadius:3, p:3, ml:2, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[200] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
+                  <Grid sx={{ my:1, borderRadius:3, p:3, ml:2, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[300] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
                      <Typography variant='body1' sx={{fontWeight:300}} className='red-hat-font'>You don't have any projects yet</Typography>
                   </Grid>
                )

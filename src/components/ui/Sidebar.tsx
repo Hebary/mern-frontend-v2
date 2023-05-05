@@ -14,9 +14,10 @@ export const Sidebar: React.FC = () => {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { cleanState } = useProjects();
+    
     const onSearch = () => {
         if(search.trim().length === 0) return;
-            navigateTo(`/search/${ search }`);
+            navigateTo(`/projects/search/${search}`);
             setSearch('');
 
     }

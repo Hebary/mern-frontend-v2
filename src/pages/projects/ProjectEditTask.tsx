@@ -42,7 +42,7 @@ export const ProjectEditTask: React.FC = () => {
     useEffect(() => {
         setLoading(true);
         getTaskById(taskId as string);
-        setTimeout(() => setLoading(false), 2000);
+        setTimeout(() => setLoading(false), 1500);
     }, [])
 
     const navigate = useNavigate();
@@ -73,8 +73,8 @@ export const ProjectEditTask: React.FC = () => {
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
                             <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}><strong>Task:</strong> { task?.name }</Typography>
-                            <Button startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{":hover":{color:'#FFF', bgcolor:red[700]}, fontWeight:300, textTransform:'capitalize' }}>
-                                Delete task
+                            <Button size='small' startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{":hover":{color:'#FFF', bgcolor:red[700]}, fontWeight:300, textTransform:'capitalize' }}>
+                                Delete
                             </Button>
                         </Box>
                         <Box display={'flex'} flexDirection={'column'} onClick={ toggleModal } className='fadeInUp' >

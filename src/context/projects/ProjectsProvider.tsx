@@ -282,7 +282,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
-    const changeTaskState = async (id: string, state: boolean) => {
+    const changeTaskState = async (id: string) => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return;
@@ -292,7 +292,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post<Task>(`/task/state/${id}`,{state}, config)
+            const { data } = await pmApi.post<Task>(`/task/state/${id}`,{}, config)
             dispatch({ type: '[PROJECTS]-CHANGE_TASK_STATE', payload: data });
         } catch (error) {
             console.log(error);
