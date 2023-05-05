@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom"
-import { Box, Button, Chip, FormControl, Grid, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
 import { Layout } from "../../components/layout"
 import { useProjects, useUI } from "../../hooks";
 import { FullScreenLoading } from '../../components/ui';
-import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd } from '@mui/icons-material';
+import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd, PersonRemoveOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { Task } from '../../components/projects';
 import { grey } from '@mui/material/colors';
@@ -20,7 +20,7 @@ const PRIORITY = ['Low', 'Medium', 'High'];
 
 export const ProjectPage: React.FC = () => {
 
-    const { getProjectById, project, createNewTask } = useProjects();
+    const { getProjectById, project, createNewTask, deleteContributor } = useProjects();
 
     const { isModalOpen, toggleModal } = useUI();
     const [loading, setLoading] = useState(false);
@@ -46,6 +46,11 @@ export const ProjectPage: React.FC = () => {
             setAlert(false)
             toggleModal();
         }, 1500);
+    }
+
+    const onDeleteContributor = (id: string) => {
+        confirm('Are you sure you want to delete this contributor?') &&
+        deleteContributor(id);
     }
 
     return (
@@ -89,10 +94,17 @@ export const ProjectPage: React.FC = () => {
                         {  
                         project?.contributors?.length ? 
                             project?.contributors?.map(contributor => (   
-                            <Grid key={contributor?._id} sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[100] }, transition: 'all .3s ease-in-out' }} item xs={12} md={10} >
-                                <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
-                                <Typography color='primary.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
-                            </Grid> 
+                                <Grid key={contributor?._id} 
+                                    sx={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:1, mb:2, borderRadius:3, p:3, mx:4, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)', cursor:'pointer', ":hover":{ bgcolor:grey[100] }, transition: 'all .3s ease-in-out' }} 
+                                    item xs={12} md={10} className='fadeInUp' >
+                                    <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
+                                    <Typography color='primary.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
+                                    <IconButton
+                                            onClick={()=>onDeleteContributor(contributor?._id)}
+                                        >
+                                        <PersonRemoveOutlined sx={{color:'primary.main'}} />    
+                                    </IconButton>
+                                </Grid> 
                             )) 
                             : <Typography variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>No contributors yet</Typography>
                         }

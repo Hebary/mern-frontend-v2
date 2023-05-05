@@ -3,7 +3,7 @@ import { AuthContext, authReducer } from './';
 import { User } from '../../interfaces';
 import { pmApi } from '../../config';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useProjects } from '../../hooks';
+
 
 
 interface Props {
@@ -24,7 +24,6 @@ const AUTH_INITIAL_STATE: AuthState = {
 }
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-    const { cleanState } = useProjects();
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
     const { pathname } = useLocation();
 
@@ -64,7 +63,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     const signOut = () => {
         localStorage.removeItem('token');
         dispatch({ type: '[AUTH]-SET_USER', payload: AUTH_INITIAL_STATE.user });
-        cleanState();
     }
 
     return (

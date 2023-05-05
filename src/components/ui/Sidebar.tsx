@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { AddCircleOutlineRounded, CategoryOutlined, LoginOutlined, SearchOutlined } from "@mui/icons-material";
-import { useAuth, useUI } from "../../hooks";
+import { useProjects, useAuth, useUI } from "../../hooks";
 
 
 
@@ -13,7 +13,7 @@ export const Sidebar: React.FC = () => {
     const { signOut} = useAuth();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
-
+    const { cleanState } = useProjects();
     const onSearch = () => {
         if(search.trim().length === 0) return;
             navigateTo(`/search/${ search }`);
@@ -23,7 +23,9 @@ export const Sidebar: React.FC = () => {
 
     const onSignOut = () => {
         signOut();
+        cleanState();
         navigate('/login')
+        toggleMenu();
     }
 
     const navigateTo = (path: string) => { 

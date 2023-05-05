@@ -49,12 +49,31 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         getUserProjects()
     }, []);
 
-        const cleanState = () => {
-            dispatch({ type: '[PROJECTS]-SET_PROJECTS', payload:[]});
-            dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: undefined});
-            dispatch({ type: '[PROJECTS]-SET_TASK', payload: undefined});
-            dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: undefined});
+    const updateProjectsInState = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.get<Project[]>('/projects', config);
+            
+            dispatch({type: '[PROJECTS]-SET_PROJECTS', payload: data});
+        
+        } catch( error) {
+            console.log({error});
         }
+    }
+
+    const cleanState = () => {
+        dispatch({ type: '[PROJECTS]-SET_PROJECTS', payload:[]});
+        dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: undefined});
+        dispatch({ type: '[PROJECTS]-SET_TASK', payload: undefined});
+        dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: undefined});
+    }
 
     const createProject  = async (project: Project) => {
     
@@ -244,6 +263,23 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             console.log(error);
         }
     }
+    const deleteContributor = async(id: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.delete(`/projects/contributors/${state.project?._id}`, config);
+            console.log(data);
+            // dispatch({ type: '[PROJECTS]-ADD_CONTRIBUTOR', payload: state.contributor as User });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return ( 
         <ProjectsContext.Provider
@@ -263,7 +299,9 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     getTaskById,
                     findContributor,
                     addContributor,
+                    deleteContributor,
                     cleanState,
+                    updateProjectsInState
                 }}>
             {children}
         </ProjectsContext.Provider>

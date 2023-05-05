@@ -18,6 +18,8 @@ interface ContextProps {
     findContributor: (contributorEmail: string) => void;
     addContributor: (contributorEmail: string) => void;
     cleanState: () => void;
+    deleteContributor: (id: string) => void;
+    updateProjectsInState: () => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

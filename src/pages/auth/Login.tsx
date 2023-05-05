@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
-import { useAuth } from '../../hooks';
+import { useAuth, useProjects } from '../../hooks';
 import { User } from '../../interfaces';
 import { pmApi } from '../../config';
-import { useNavigate } from 'react-router-dom';
 
 type FormData = {
     email    : string;
@@ -24,6 +24,7 @@ export const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const { setUserSession } = useAuth();
+    const { updateProjectsInState } = useProjects();
 
 
     const onSignIn = async ({ email, password }: FormData) => {
@@ -33,8 +34,8 @@ export const Login: React.FC = () => {
             setWelcome(true);
 
             localStorage.setItem('token', data.token);
-            
             setUserSession(data as User);
+            updateProjectsInState();
             setTimeout(() => {
                 setWelcome(false)
                 navigate('/projects');
