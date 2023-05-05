@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { Box, Button, Chip, Grid, TextField, Typography } from '@mui/material';
 import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
@@ -55,10 +55,10 @@ export const Login: React.FC = () => {
 
     return (
         <AuthLayout title='Login Page'>
-          <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
-              <Typography color='info.main' variant='h3' component='h1' sx={{ textAlign:'justify', ml:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>Log in</Typography>
-              <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>and manage your projects</Typography>
-          </Box>
+            <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
+                <Typography color='info.main' variant='h3' component='h1' sx={{ textAlign:'justify', ml:2, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>Log in</Typography>
+                <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>and manage your projects</Typography>
+            </Box>
             <form  className='fadeInUp' onSubmit={ handleSubmit(onSignIn) }>
                 <Grid sx={{ maxWidth:'350px', mx:'auto', p: 4, borderRadius: 5, boxShadow:'0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.2)', mt: 2 }}>
                       <Grid container spacing={ 3 }>
@@ -119,7 +119,7 @@ export const Login: React.FC = () => {
                             </Grid>
 
                             <Grid item xs={ 12 } display='flex' justifyContent='end'>
-                                <Link component='span'>
+                                <Link style={{textDecoration:'none', transition:'all .4s ease-in-out'}} to={'/create-account'}>
                                     <Typography variant='body2' color='black'>
                                         Don&apos;t have an account? Sign Up
                                     </Typography>

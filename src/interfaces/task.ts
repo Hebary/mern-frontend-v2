@@ -4,5 +4,6 @@ export interface Task {
     priority: string;
     deliveryDate: string;
     project: string;
+    state: boolean;
     _id?: string;
 }

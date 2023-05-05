@@ -1,10 +1,10 @@
- import { useState } from 'react';
-import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
- import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Box, Button, Chip, Grid, TextField, Typography } from '@mui/material';
+import { CheckCircleOutline, ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { AuthLayout } from '../../components/layout';
 import { utils } from '../../utils';
-import { useNavigate } from 'react-router-dom';
 import { pmApi } from '../../config';
 
 type FormData = {
@@ -51,7 +51,7 @@ export const CreateAccount: React.FC = () => {
     return (
         <AuthLayout title='Sign In Page'>
           <Box maxWidth={'350px'} className='fadeInUp' mx='auto'>
-              <Typography color='info.main' variant='h3' component='h1' fontWeight={ 300 } sx={{ textAlign:'justify', ml: 1, letterSpacing: 2, textTransform:'capitalize' }}>
+              <Typography color='info.main' variant='h3' component='h1' fontWeight={ 300 } sx={{ textAlign:'justify', ml: 2, letterSpacing: 2, textTransform:'capitalize' }}>
                 Sign Up
               </Typography>
               <Typography color='primary.main' variant='h3' component='h1' sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>
@@ -136,7 +136,7 @@ export const CreateAccount: React.FC = () => {
                             </Grid>
 
                             <Grid item xs={ 12 } display='flex' justifyContent='end'>
-                                    <Link component='span'>
+                                    <Link to={'/login'} style={{textDecoration:'none'}}>
                                         <Typography variant='body2' color='black'>
                                             Already have an account? Login
                                         </Typography>
