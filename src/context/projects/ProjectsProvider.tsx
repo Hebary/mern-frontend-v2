@@ -263,7 +263,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
-
     const deleteContributor = async(id: string, email: string) => {
         try {
             const token = localStorage.getItem('token');
@@ -277,6 +276,24 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             const { data } = await pmApi.post(`/projects/delete-contributor/${state.project?._id}`,{ email}, config);
             console.log(data);
             dispatch({ type: '[PROJECTS]-DELETE_CONTRIBUTOR', payload: id });
+            dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: Projects_INITIAL_STATE.contributor });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const changeTaskState = async (id: string, state: boolean) => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+            const config = {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            const { data } = await pmApi.post<Task>(`/task/state/${id}`,{state}, config)
+            dispatch({ type: '[PROJECTS]-CHANGE_TASK_STATE', payload: data });
         } catch (error) {
             console.log(error);
         }
@@ -302,7 +319,8 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     addContributor,
                     deleteContributor,
                     cleanState,
-                    updateProjectsInState
+                    updateProjectsInState,
+                    changeTaskState
                 }}>
             {children}
         </ProjectsContext.Provider>

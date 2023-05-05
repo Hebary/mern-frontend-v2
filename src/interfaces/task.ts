@@ -5,5 +5,6 @@ export interface Task {
     deliveryDate: string;
     project: string;
     state: boolean;
+    completed:{ name:string, _id:string };
     _id?: string;
 }

@@ -20,6 +20,7 @@ interface ContextProps {
     cleanState: () => void;
     deleteContributor: (id: string, email: string) => void;
     updateProjectsInState: () => void;
+    changeTaskState: (id: string, state: boolean) => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

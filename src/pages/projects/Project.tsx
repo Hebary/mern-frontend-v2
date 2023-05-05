@@ -32,7 +32,6 @@ export const ProjectPage: React.FC = () => {
     const [priority, setPriority] = useState(PRIORITY[0]);
     
     const { id } = useParams();
-    
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     
@@ -92,7 +91,7 @@ export const ProjectPage: React.FC = () => {
                                         <Link key={task._id} style={{textDecoration:'none'}} to={`task/${task._id}`}>
                                             <Task task={task}  />
                                         </Link>
-                                    : <Task task={task}  />
+                                    : <Task task={task} key={task._id}  />
                                     )
                                 )  
                             }

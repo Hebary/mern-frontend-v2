@@ -15,6 +15,7 @@ type ProjectsActionType =
 | {type: '[PROJECTS]-SET_CONTRIBUTOR', payload: User | undefined}
 | {type: '[PROJECTS]-ADD_CONTRIBUTOR', payload: User }
 | {type: '[PROJECTS]-DELETE_CONTRIBUTOR', payload: string }
+| {type: '[PROJECTS]-CHANGE_TASK_STATE', payload: Task }
 
 
 export const projectsReducer = (state: ProjectsState, action: ProjectsActionType): ProjectsState => {
@@ -78,6 +79,11 @@ export const projectsReducer = (state: ProjectsState, action: ProjectsActionType
       return{
         ...state,
         project: state.project && { ...state.project, contributors: state.project?.contributors.filter(c => c?._id !== action.payload) }
+      }
+    case '[PROJECTS]-CHANGE_TASK_STATE':
+      return {
+        ...state,
+        project:state.project && { ...state.project, tasks: state.project?.tasks.map((task: Task) => task?._id === action.payload._id ? action.payload : task)}
       }
     default: 
       return state; 
