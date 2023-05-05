@@ -18,7 +18,7 @@ interface ContextProps {
     findContributor: (contributorEmail: string) => void;
     addContributor: (contributorEmail: string) => void;
     cleanState: () => void;
-    deleteContributor: (id: string) => void;
+    deleteContributor: (id: string, email: string) => void;
     updateProjectsInState: () => void;
 }
 

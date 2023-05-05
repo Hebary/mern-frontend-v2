@@ -39,7 +39,7 @@ export const NewContributor: React.FC = () => {
                 <Typography color='info.main' variant='h4' component='h2' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>New</Typography>
                 <Typography color='primary.main' variant='h4' component='h2' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2, fontWeight:900, textTransform:'capitalize' }}>Contributor</Typography>
             </Box>
-            <Grid item xs={ 6 } m='10px auto'>
+            <Grid item xs={ 12 } maxWidth='320px' m='10px auto'>
                                 
                 <Chip
                     label='contributor succesfully added'

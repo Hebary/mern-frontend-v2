@@ -48,9 +48,9 @@ export const ProjectPage: React.FC = () => {
         }, 1500);
     }
 
-    const onDeleteContributor = (id: string) => {
+    const onDeleteContributor = (id: string, email: string) => {
         confirm('Are you sure you want to delete this contributor?') &&
-        deleteContributor(id);
+        deleteContributor(id, email);
     }
 
     return (
@@ -100,13 +100,13 @@ export const ProjectPage: React.FC = () => {
                                     <Typography color='info.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.name}</Typography>
                                     <Typography color='primary.main' variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>{contributor?.email}</Typography>
                                     <IconButton
-                                            onClick={()=>onDeleteContributor(contributor?._id)}
+                                            onClick={ () => onDeleteContributor(contributor?._id, contributor?.email) }
                                         >
                                         <PersonRemoveOutlined sx={{color:'primary.main'}} />    
                                     </IconButton>
                                 </Grid> 
                             )) 
-                            : <Typography variant='body1' fontWeight={ 500 } sx={{ mr:1, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>No contributors yet</Typography>
+                            : <Typography variant='body1' fontWeight={ 500 } sx={{ ml:3, letterSpacing:2, fontWeight:300, textTransform:'capitalize' }}>No contributors yet.</Typography>
                         }
                         <Modal
                             open={ isModalOpen }

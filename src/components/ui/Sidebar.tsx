@@ -10,7 +10,7 @@ import { useProjects, useAuth, useUI } from "../../hooks";
 export const Sidebar: React.FC = () => {
 
     const { isMenuOpen, toggleMenu } = useUI();
-    const { signOut} = useAuth();
+    const { signOut, user } = useAuth();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { cleanState } = useProjects();
@@ -32,8 +32,6 @@ export const Sidebar: React.FC = () => {
       navigate(path);
     }
 
-    
-
     return (
         <Drawer
             open={ isMenuOpen }
@@ -44,7 +42,7 @@ export const Sidebar: React.FC = () => {
             <Box sx={{ width: 250, paddingTop: 1 }}>
 
             <Box sx={{ padding: 2 }}>
-                <Typography variant='body2' className='red-hat-font'>Welcome user</Typography>
+                <Typography variant='body2' fontWeight={500} textTransform={'capitalize'} className='red-hat-font'>Welcome { user.name }</Typography>
             </Box>
             <Divider/>
             <List>
@@ -70,7 +68,7 @@ export const Sidebar: React.FC = () => {
                 </ListItemButton>
             
                 <ListItemButton
-                        onClick={ () => navigateTo('/new-project')}
+                        onClick={ () => { navigateTo('/new-project'); toggleMenu(); }}
                     >
                         <ListItemIcon>
                             <AddCircleOutlineRounded/>

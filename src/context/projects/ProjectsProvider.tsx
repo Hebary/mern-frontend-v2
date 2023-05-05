@@ -242,7 +242,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: data });
         } catch (error: any) {
             console.log(error);
-            return error.response.data.message
         }
     }
 
@@ -263,7 +262,9 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             console.log(error);
         }
     }
-    const deleteContributor = async(id: string) => {
+
+
+    const deleteContributor = async(id: string, email: string) => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return;
@@ -273,9 +274,9 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.delete(`/projects/contributors/${state.project?._id}`, config);
+            const { data } = await pmApi.post(`/projects/delete-contributor/${state.project?._id}`,{ email}, config);
             console.log(data);
-            // dispatch({ type: '[PROJECTS]-ADD_CONTRIBUTOR', payload: state.contributor as User });
+            dispatch({ type: '[PROJECTS]-DELETE_CONTRIBUTOR', payload: id });
         } catch (error) {
             console.log(error);
         }

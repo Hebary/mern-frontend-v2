@@ -8,6 +8,6 @@ export interface Project {
     client      : string;
     tasks       : Task[];
     contributors: User[];
-    creator     : User;
+    creator     : User["_id"];
 }
 

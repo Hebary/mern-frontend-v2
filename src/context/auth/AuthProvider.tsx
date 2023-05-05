@@ -70,7 +70,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     <AuthContext.Provider
         value={{
                 ...state,
-
                 setUserSession,
                 user: state.user,
                 signOut
