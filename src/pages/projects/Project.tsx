@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { Box, Button, Chip, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
-import { Layout } from "../../components/layout"
-import { useProjects, useUI } from "../../hooks";
-import { FullScreenLoading } from '../../components/ui';
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd, PersonRemoveOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import { Task } from '../../components/projects';
 import { grey } from '@mui/material/colors';
-import { useAdmin } from '../../hooks/useAdmin';
+import { Layout } from "../../components/layout"
+import { FullScreenLoading } from '../../components/ui';
+import { useProjects, useUI, useAdmin } from "../../hooks";
+import { Task } from '../../components/projects';
 import { Task as ITask } from "../../interfaces"
+import { io } from 'socket.io-client'
 
+let socket: any;
 
 type FormData = {
     name        : string;
@@ -23,7 +24,7 @@ const PRIORITY = ['Low', 'Medium', 'High'];
 
 export const ProjectPage: React.FC = () => {
 
-    const { getProjectById, project, createNewTask, deleteContributor } = useProjects();
+            const { getProjectById, project, createNewTask, deleteContributor, addTaskSocket, deleteTaskSocket } = useProjects();
 
     const { isModalOpen, toggleModal } = useUI();
     const [loading, setLoading] = useState(false);
@@ -33,23 +34,50 @@ export const ProjectPage: React.FC = () => {
     
     const { id } = useParams();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         setLoading(true);
         getProjectById(id as string);
         setTimeout(() => setLoading(false), 1000);
     }, [])
 
+    //SOCKET-IO ROOM CONNECTION
+    useEffect(() => {
+        socket = io(import.meta.env.VITE_SOCKET_URL);
+        socket.emit('open project', id);
+    },[id])
+
+    useEffect(() => {
+        socket.on('task added', (task: ITask) => {
+            addTaskSocket(task);
+        })
+
+        socket.on('task deleted', (task: ITask) => {
+            deleteTaskSocket(task as ITask);
+        })
+        
+        return () => {
+            socket.off('task added');
+            socket.off('task deleted');
+
+        }
+    })
+  
+
     const admin = useAdmin();
 
     const onSubmitTask = async( data: FormData ) => {
         createNewTask({...data, priority, project: project?._id as string} as ITask);
         setAlert(true);
+        reset();
         setTimeout(() => {
             setAlert(false)
             toggleModal();
-        }, 1500);
+            navigate(`/projects/${project?._id}`);
+        }, 10);
     }
 
     const onDeleteContributor = (id: string, email: string) => {
@@ -133,7 +161,7 @@ export const ProjectPage: React.FC = () => {
                             sx={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}
                             >
                             <Box sx={{  width: 400 }}>
-                            <form onSubmit={handleSubmit(onSubmitTask)}>
+                            <form id='task-form' onSubmit={handleSubmit(onSubmitTask)}>
                                 <Box display='flex' flexDirection='column' gap={2} sx={{ width:'100%', bgcolor:'background.paper', p:2, borderRadius:2 }}>
                                     <Box display='flex' alignItems='center' justifyContent={'center'} mt={2} gap={1}>
                                         <Typography id="parent-modal-title" color='info.main' fontWeight={300} textTransform={'capitalize'} textAlign={'center'} variant="h5" component="h2">new</Typography>

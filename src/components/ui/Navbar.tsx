@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AppBar, Toolbar, Typography, Link, Box, IconButton, Input, InputAdornment } from '@mui/material';
 import { SearchOutlined, MenuOutlined, ClearOutlined, CategoryOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useUI } from '../../hooks';
+import { useProjects, useUI } from '../../hooks';
 
 
 
@@ -11,12 +11,15 @@ import { useUI } from '../../hooks';
 export const Navbar: React.FC = () => {
 
     const { toggleMenu } = useUI();
+    const { searchProject } = useProjects();
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const onSearch = () => {
         if(search.trim().length === 0) return;
+        searchProject(search);
+        navigate('/projects');
     }
     
 

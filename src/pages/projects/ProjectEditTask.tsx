@@ -42,7 +42,7 @@ export const ProjectEditTask: React.FC = () => {
     useEffect(() => {
         setLoading(true);
         getTaskById(taskId as string);
-        setTimeout(() => setLoading(false), 1500);
+        setTimeout(() => setLoading(false), 2000);
     }, [])
 
     const navigate = useNavigate();
@@ -59,7 +59,7 @@ export const ProjectEditTask: React.FC = () => {
 
     const onDeleteTask = () => {
         confirm('Are you sure you want to delete this task?') &&
-        deleteTask(taskId as string);
+        deleteTask(task as ITask);
         navigate(`/projects/${project?._id}`);
     }
     return (
@@ -73,7 +73,7 @@ export const ProjectEditTask: React.FC = () => {
                         </Box>
                         <Box sx={{display:'flex', alignItems:'center', px:2, justifyContent:'space-between', my:2}} className='fadeInUp' >
                             <Typography variant='h6' component='h2' sx={{ fontWeight:300, textTransform:'capitalize' }}><strong>Task:</strong> { task?.name }</Typography>
-                            <Button size='small' startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{":hover":{color:'#FFF', bgcolor:red[700]}, fontWeight:300, textTransform:'capitalize' }}>
+                            <Button size ='small' startIcon={<DeleteForeverOutlined/>} onClick={onDeleteTask} variant='outlined' sx={{":hover":{color:'#FFF', bgcolor:red[700]}, fontWeight:300, textTransform:'capitalize' }}>
                                 Delete
                             </Button>
                         </Box>

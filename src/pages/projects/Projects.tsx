@@ -1,8 +1,8 @@
-import { Layout } from "../../components/layout"
-import { Project } from "../../components/projects"
 import { Grid, Typography } from '@mui/material';
-import { useProjects } from "../../hooks";
 import { grey } from "@mui/material/colors";
+import { Layout } from "../../components/layout"
+import { useProjects } from "../../hooks";
+import { Project } from "../../components/projects"
 
 
 export const Projects: React.FC = () => {

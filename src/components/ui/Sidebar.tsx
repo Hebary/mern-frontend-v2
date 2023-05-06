@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
-import { AddCircleOutlineRounded, CategoryOutlined, LoginOutlined, SearchOutlined } from "@mui/icons-material";
+import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { AddCircleOutlineRounded, CategoryOutlined, LoginOutlined} from "@mui/icons-material";
 import { useProjects, useAuth, useUI } from "../../hooks";
 
 
@@ -11,16 +10,10 @@ export const Sidebar: React.FC = () => {
 
     const { isMenuOpen, toggleMenu } = useUI();
     const { signOut, user } = useAuth();
-    const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const { cleanState } = useProjects();
     
-    const onSearch = () => {
-        if(search.trim().length === 0) return;
-            navigateTo(`/projects/search/${search}`);
-            setSearch('');
 
-    }
 
     const onSignOut = () => {
         signOut();
@@ -77,26 +70,6 @@ export const Sidebar: React.FC = () => {
                         <ListItemText primary={'New project'} />
                 </ListItemButton>
                 
-                <ListItem>
-                    <Input
-                        type='text'
-                        autoFocus   
-                        value={search}
-                        onChange={ (e) => setSearch( e.target.value ) }
-                        onKeyUp={ (e) => e.key === 'Enter' ? onSearch() : null}
-                        placeholder="Search..."
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={ onSearch }
-                                >
-                                 <SearchOutlined />
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </ListItem>
-
             </List>
         </Box>      
         </Drawer>

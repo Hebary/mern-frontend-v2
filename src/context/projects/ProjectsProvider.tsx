@@ -3,7 +3,8 @@ import { ProjectsContext, projectsReducer } from './';
 import { pmApi } from '../../config';
 import { Project, Task, User } from '../../interfaces';
 
-
+import { io } from 'socket.io-client'
+let socket : any;
 interface Props {
    children: JSX.Element | JSX.Element[];
 }
@@ -48,6 +49,13 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
         getUserProjects()
     }, []);
+    
+    //open socket-io connection
+    useEffect(() => {
+      socket = io(import.meta.env.VITE_SOCKET_URL);
+    }, [])
+    
+    
 
     const updateProjectsInState = async () => {
         try {
@@ -163,8 +171,14 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
             const { data } = await pmApi.post<Task>(`/task`, task, config);
+            
             //next line will update the project in the state
-            dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
+            // dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
+            
+            //SOCKET-IO
+            socket.emit('add task', data);
+            
+
         } catch (error) {
             console.log({error});
         }
@@ -209,7 +223,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
 
     }
 
-    const deleteTask = async (id: string) => {
+    const deleteTask = async (task: Task) => {
         try {
             const token = localStorage.getItem('token');
                 if(!token) return;
@@ -219,10 +233,12 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                         'Authorization': `Bearer ${token}`
                     }
                 }
-                const { data } = await pmApi.delete<Task>(`/task/${id}`, config);
+                const { data } = await pmApi.delete<Task>(`/task/${task._id}`, config);
                 console.log(data);
-                dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: id });
-                dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
+                
+                socket.emit('delete task', task);
+                // dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: id });
+                // dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
             } catch (error) {
             console.log({error});
         }
@@ -299,6 +315,31 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         }
     }
 
+    const searchProject = (query: string) => {
+        const projectsAux = state.projects;
+        if(query === '') {
+            return;
+        }
+        const filteredProjects = state.projects.filter(project => project.name.toLowerCase().includes(query.toLowerCase()));
+        dispatch({ type: '[PROJECTS]-SET_PROJECTS', payload: filteredProjects });
+        setTimeout(() => {
+            dispatch({ type: '[PROJECTS]-SET_PROJECTS', payload: projectsAux });
+        },15000)
+        
+    }
+
+
+    //Socket-IO
+
+    const addTaskSocket = (task: Task) => {
+        dispatch({ type: '[PROJECTS]-ADD_TASK', payload: task });
+    }
+
+    const deleteTaskSocket = (task: Task) => {
+            dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: task?._id as string});
+            dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
+    }
+
     return ( 
         <ProjectsContext.Provider
             value={{
@@ -320,7 +361,10 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     deleteContributor,
                     cleanState,
                     updateProjectsInState,
-                    changeTaskState
+                    changeTaskState,
+                    searchProject,
+                    addTaskSocket,
+                    deleteTaskSocket
                 }}>
             {children}
         </ProjectsContext.Provider>

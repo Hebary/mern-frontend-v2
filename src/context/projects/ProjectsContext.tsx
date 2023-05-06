@@ -13,7 +13,7 @@ interface ContextProps {
     deleteProject: (id: string) => void;
     createNewTask: (task: Task) => void;
     updateTask: (task: Task) => void;
-    deleteTask: (id: string) => void;
+    deleteTask: (task: Task) => void;
     getTaskById: (id: string) => void;
     findContributor: (contributorEmail: string) => void;
     addContributor: (contributorEmail: string) => void;
@@ -21,6 +21,10 @@ interface ContextProps {
     deleteContributor: (id: string, email: string) => void;
     updateProjectsInState: () => void;
     changeTaskState: (id: string) => void;
+    searchProject:(query: string) => void;
+    //socket.io
+    addTaskSocket: (task: Task) => void;
+    deleteTaskSocket: (task: Task) => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

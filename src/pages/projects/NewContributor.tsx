@@ -1,13 +1,13 @@
-import { Box, Button, Chip, FormControl, Grid, TextField, Typography } from "@mui/material"
-import { useForm } from "react-hook-form";
-import { Layout } from "../../components/layout"
-import { emailValidator } from '../../utils/isValidEmail';
-import { useProjects } from "../../hooks";
-import { grey } from "@mui/material/colors";
-import { CheckCircleOutline } from "@mui/icons-material";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Box, Button, Chip, FormControl, Grid, TextField, Typography } from "@mui/material"
+import { CheckCircleOutline } from "@mui/icons-material";
+import { grey } from "@mui/material/colors";
+import { Layout } from "../../components/layout"
+import { useProjects } from "../../hooks";
 import { User } from "../../interfaces";
+import { emailValidator } from '../../utils/isValidEmail';
 
 type FormData = {
     email:string;
