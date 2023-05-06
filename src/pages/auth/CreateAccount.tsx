@@ -39,6 +39,7 @@ export const CreateAccount: React.FC = () => {
         } catch (error: unknown) {
             console.log({error});
             setError(true);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setMessage((error as any).response.data.msg);
             setTimeout(()=> {
                 setError(false)

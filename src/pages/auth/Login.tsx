@@ -45,6 +45,7 @@ export const Login: React.FC = () => {
 
             console.log({error});
             setError(true);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setMessage((error as any).response.data.msg);
             setTimeout(()=> {
                 setError(false)

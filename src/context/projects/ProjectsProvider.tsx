@@ -3,8 +3,8 @@ import { ProjectsContext, projectsReducer } from './';
 import { pmApi } from '../../config';
 import { Project, Task, User } from '../../interfaces';
 
-import { io } from 'socket.io-client'
-let socket : any;
+import { io,Socket } from 'socket.io-client'
+let socket : Socket;
 interface Props {
    children: JSX.Element | JSX.Element[];
 }
@@ -247,7 +247,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             }
             const { data } = await pmApi.post('/projects/contributors', {email}, config);
             dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: data });
-        } catch (error: any) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -336,7 +336,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
         dispatch({ type: '[PROJECTS]-UPDATE_TASK', payload: task });
         dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
     }
-    
+
     const changeTaskStateSocket = (task: Task) => {
         dispatch({ type: '[PROJECTS]-CHANGE_TASK_STATE', payload: task });
     }

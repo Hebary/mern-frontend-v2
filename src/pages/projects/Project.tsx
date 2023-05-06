@@ -9,9 +9,9 @@ import { FullScreenLoading } from '../../components/ui';
 import { useProjects, useUI, useAdmin } from "../../hooks";
 import { Task } from '../../components/projects';
 import { Task as ITask } from "../../interfaces"
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
-let socket: any;
+let socket: Socket;
 
 type FormData = {
     name        : string;
@@ -42,6 +42,7 @@ export const ProjectPage: React.FC = () => {
         setLoading(true);
         getProjectById(id as string);
         setTimeout(() => setLoading(false), 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     //SOCKET-IO ROOM CONNECTION & TASK LISTENERS

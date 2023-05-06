@@ -43,6 +43,7 @@ export const ProjectEditTask: React.FC = () => {
         setLoading(true);
         getTaskById(taskId as string);
         setTimeout(() => setLoading(false), 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const navigate = useNavigate();
