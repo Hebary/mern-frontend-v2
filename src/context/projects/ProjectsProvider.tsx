@@ -172,9 +172,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             }
             const { data } = await pmApi.post<Task>(`/task`, task, config);
             
-            //next line will update the project in the state
-            // dispatch({ type: '[PROJECTS]-ADD_TASK', payload: data });
-            
             //SOCKET-IO
             socket.emit('add task', data);
             
@@ -194,7 +191,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-
             const { data } = await pmApi<Task>(`/task/${id}`, config);
             dispatch({ type: '[PROJECTS]-SET_TASK', payload: data });
         }catch (error) {
@@ -212,12 +208,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-
             const { data } = await pmApi.put<Task>(`/task/${state.task?._id}`, task, config);
-
-            // dispatch({ type: '[PROJECTS]-UPDATE_TASK', payload: data });
-            // dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
-
             socket.emit('update task', data);
         }catch (error) {
             console.log({error});
@@ -239,8 +230,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 console.log(data);
                 
                 socket.emit('delete task', task);
-                // dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: id });
-                // dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
             } catch (error) {
             console.log({error});
         }
@@ -311,7 +300,6 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
             const { data } = await pmApi.post<Task>(`/task/state/${id}`,{}, config)
-            // dispatch({ type: '[PROJECTS]-CHANGE_TASK_STATE', payload: data });
             socket.emit('complete task', data);
 
         } catch (error) {
@@ -343,10 +331,12 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
             dispatch({ type: '[PROJECTS]-DELETE_TASK', payload: task?._id as string});
             dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
     }
+
     const updateTaskSocket = (task: Task) => {
         dispatch({ type: '[PROJECTS]-UPDATE_TASK', payload: task });
         dispatch({ type: '[PROJECTS]-SET_TASK', payload: Projects_INITIAL_STATE.task });
     }
+    
     const changeTaskStateSocket = (task: Task) => {
         dispatch({ type: '[PROJECTS]-CHANGE_TASK_STATE', payload: task });
     }
