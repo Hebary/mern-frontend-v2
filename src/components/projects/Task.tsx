@@ -28,11 +28,11 @@ export const Task: React.FC<Props> = ({ task, showEdit = false }) => {
                     <Box alignItems='center' justifyContent={'center'} display='flex' gap={1}>
                         { 
                             !task?.state
-                            ?   <Button onClick={onChangeTaskState}size='small' sx={{ fontWeight:300, bgcolor:orange[500],':hover':{color:'#FFF', bgcolor:orange[700]} }}  endIcon={<RuleRounded/>} variant='text'>Incomplete</Button>
+                            ?   <Button onClick={onChangeTaskState}size='small' sx={{ fontSize:'14px', textTransform:'capitalize', fontWeight:300, bgcolor:orange[500], color:'#FFF', ':hover':{ bgcolor:orange[700]} }}  endIcon={<RuleRounded/>} variant='text'>Incomplete</Button>
                             :   <Box display='flex' flexDirection='column' alignItems='start' justifyContent='end'>
-                                    <Button onClick={onChangeTaskState}size='small' sx={{ fontWeight:300, bgcolor:green[300], ':hover':{color:'#FFF', bgcolor:green[400]} }} endIcon={<CheckCircleOutline/>} variant='text'>Complete</Button>
+                                    <Button onClick={onChangeTaskState}size='small' sx={{ fontSize:'14px', textTransform:'capitalize', fontWeight:300, bgcolor:green[300], color:'#FFF', ':hover':{ bgcolor:green[400]} }} endIcon={<CheckCircleOutline/>} variant='text'>Complete</Button>
                                     { task?.completed.name &&
-                                        <Typography className='fadeInUp' variant='body2'sx={{ml:.5, mt:.5}}>Completed by <span style={{fontWeight:'bold'}}> {task?.completed.name}</span></Typography>
+                                        <Typography className='fadeInUp'sx={{ fontSize:'12px', ml:.3, mt:.5}}>Completed by <span style={{fontWeight:'bold'}}> {task?.completed.name}</span></Typography>
                                     }
                                 </Box>
                         } 

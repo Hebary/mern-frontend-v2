@@ -25,6 +25,8 @@ interface ContextProps {
     //socket.io
     addTaskSocket: (task: Task) => void;
     deleteTaskSocket: (task: Task) => void;
+    updateTaskSocket: (task: Task) => void;
+    changeTaskStateSocket: (task: Task) => void;
 }
 
 export const ProjectsContext = createContext({} as ContextProps);

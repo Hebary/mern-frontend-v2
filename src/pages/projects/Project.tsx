@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { Box, Button, Chip, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
 import { AddCircleOutlineRounded, CheckCircleOutline, EditOutlined, GroupAdd, PersonRemoveOutlined } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import { grey } from '@mui/material/colors';
+import { blue, grey } from '@mui/material/colors';
 import { Layout } from "../../components/layout"
 import { FullScreenLoading } from '../../components/ui';
 import { useProjects, useUI, useAdmin } from "../../hooks";
@@ -24,7 +24,7 @@ const PRIORITY = ['Low', 'Medium', 'High'];
 
 export const ProjectPage: React.FC = () => {
 
-            const { getProjectById, project, createNewTask, deleteContributor, addTaskSocket, deleteTaskSocket } = useProjects();
+    const { getProjectById, project, createNewTask, deleteContributor, addTaskSocket, deleteTaskSocket, updateTaskSocket, changeTaskStateSocket } = useProjects();
 
     const { isModalOpen, toggleModal } = useUI();
     const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export const ProjectPage: React.FC = () => {
         setTimeout(() => setLoading(false), 1000);
     }, [])
 
-    //SOCKET-IO ROOM CONNECTION
+    //SOCKET-IO ROOM CONNECTION & TASK LISTENERS
     useEffect(() => {
         socket = io(import.meta.env.VITE_SOCKET_URL);
         socket.emit('open project', id);
@@ -59,10 +59,19 @@ export const ProjectPage: React.FC = () => {
             deleteTaskSocket(task as ITask);
         })
         
+        socket.on('updated task', (task: ITask) => {
+            updateTaskSocket(task as ITask);
+        })
+
+        socket.on('completed task', (task: ITask) => {
+            changeTaskStateSocket(task as ITask);
+        })
+
         return () => {
             socket.off('task added');
             socket.off('task deleted');
-
+            socket.off('updated task');
+            socket.off('completed task');
         }
     })
   
@@ -97,9 +106,11 @@ export const ProjectPage: React.FC = () => {
                         { admin && 
                             <Link to={`/projects/edition/${project?._id}`}>
                                 <Button
-                                    sx={{ py:0, textTransform:'capitalize', fontWeight:300, fontSize:'15px' }}
+                                    size='small'
+                                    variant='outlined'
+                                    sx={{ py:0, textTransform:'capitalize', fontWeight:300, fontSize:'15px',':hover':{bgcolor:blue[300], color:'#FFF'} }}
                                     startIcon={<EditOutlined sx={{ color:'primary.main' }}/> }
-                                 >Edit Project
+                                 >Edit
                                 </Button>
                             </Link>
                         }
