@@ -26,7 +26,7 @@ export const CreateAccount: React.FC = () => {
     
     const onSignUp = async ({name, email, password}:FormData) =>{
         try {
-            const { data } = await pmApi.post(`/users`, { name,email, password });
+            const { data } = await pmApi.post(`/api/users`, { name,email, password });
             setWelcome(true);
             setMessage(data.msg);
 

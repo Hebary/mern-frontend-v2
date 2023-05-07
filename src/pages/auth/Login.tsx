@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
 
     const onSignIn = async ({ email, password }: FormData) => {
         try {
-            const { data } = await pmApi.post(`/users/login`, { email, password });
+            const { data } = await pmApi.post(`/api/users/login`, { email, password });
             
             setWelcome(true);
 

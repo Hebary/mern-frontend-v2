@@ -39,7 +39,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                         'Authorization': `Bearer ${token}`
                     }
                 }
-                const { data } = await pmApi.get<Project[]>('/projects', config);
+                const { data } = await pmApi.get<Project[]>('/api/projects', config);
                 
                 dispatch({type: '[PROJECTS]-SET_PROJECTS', payload: data});
             
@@ -52,7 +52,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
     
     //open socket-io connection
     useEffect(() => {
-      socket = io(import.meta.env.VITE_SOCKET_URL);
+      socket = io(import.meta.env.VITE_BACKEND_URL);
     }, [])
     
     
@@ -67,7 +67,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.get<Project[]>('/projects', config);
+            const { data } = await pmApi.get<Project[]>('/api/projects', config);
             
             dispatch({type: '[PROJECTS]-SET_PROJECTS', payload: data});
         
@@ -95,7 +95,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                 }
             }
 
-            const { data } = await pmApi.post<Project>('/projects', project , config);
+            const { data } = await pmApi.post<Project>('/api/projects', project , config);
             dispatch({type: '[PROJECTS]-ADD_PROJECT', payload: data});
 
         } catch (error) {
@@ -113,7 +113,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi<Project>(`/projects/${id}`, config);
+            const { data } = await pmApi<Project>(`/api/projects/${id}`, config);
             
             dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: data });
 
@@ -132,7 +132,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.put<Project>(`/projects/${state.project?._id}`, project , config);
+            const { data } = await pmApi.put<Project>(`/api/projects/${state.project?._id}`, project , config);
             dispatch({ type: '[PROJECTS]-UPDATE_PROJECT', payload: data });
             //clean the state of previous project
             dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: Projects_INITIAL_STATE.project });
@@ -151,7 +151,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.delete<Project>(`/projects/${id}`, config);
+            const { data } = await pmApi.delete<Project>(`/api/projects/${id}`, config);
             console.log(data);
             dispatch({ type: '[PROJECTS]-DELETE_PROJECT', payload: id });
             dispatch({ type: '[PROJECTS]-SET_PROJECT', payload: Projects_INITIAL_STATE.project });
@@ -170,7 +170,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post<Task>(`/task`, task, config);
+            const { data } = await pmApi.post<Task>(`/api/task`, task, config);
             
             //SOCKET-IO
             socket.emit('add task', data);
@@ -191,7 +191,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi<Task>(`/task/${id}`, config);
+            const { data } = await pmApi<Task>(`/api/task/${id}`, config);
             dispatch({ type: '[PROJECTS]-SET_TASK', payload: data });
         }catch (error) {
             console.log({error});
@@ -208,7 +208,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.put<Task>(`/task/${state.task?._id}`, task, config);
+            const { data } = await pmApi.put<Task>(`/api/task/${state.task?._id}`, task, config);
             socket.emit('update task', data);
         }catch (error) {
             console.log({error});
@@ -245,7 +245,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post('/projects/contributors', {email}, config);
+            const { data } = await pmApi.post('/api/projects/contributors', {email}, config);
             dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: data });
         } catch (error) {
             console.log(error);
@@ -262,7 +262,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post(`/projects/contributors/${state.project?._id}`, {email, id: state.project?._id}, config);
+            const { data } = await pmApi.post(`/api/projects/contributors/${state.project?._id}`, {email, id: state.project?._id}, config);
             console.log(data);
             dispatch({ type: '[PROJECTS]-ADD_CONTRIBUTOR', payload: state.contributor as User });
         } catch (error) {
@@ -280,7 +280,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post(`/projects/delete-contributor/${state.project?._id}`,{ email}, config);
+            const { data } = await pmApi.post(`/api/projects/delete-contributor/${state.project?._id}`,{ email}, config);
             console.log(data);
             dispatch({ type: '[PROJECTS]-DELETE_CONTRIBUTOR', payload: id });
             dispatch({ type: '[PROJECTS]-SET_CONTRIBUTOR', payload: Projects_INITIAL_STATE.contributor });
@@ -299,7 +299,7 @@ export const ProjectsProvider: React.FC<Props> = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            const { data } = await pmApi.post<Task>(`/task/state/${id}`,{}, config)
+            const { data } = await pmApi.post<Task>(`/api/task/state/${id}`,{}, config)
             socket.emit('complete task', data);
 
         } catch (error) {

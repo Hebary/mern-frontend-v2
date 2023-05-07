@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
                             'Authorization': `Bearer ${token}`
                         }
                     }
-                    const { data } = await pmApi<User>(`/users/profile`, config);
+                    const { data } = await pmApi<User>(`/api/users/profile`, config);
                     setUserSession(data);
                     if(pathname === '/login' || pathname === '/') {
                         return navigate('/projects');
@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             } catch (error) {
                     console.log(error);  
             }
-
         }
         authByToken();
     }, [pathname, navigate])

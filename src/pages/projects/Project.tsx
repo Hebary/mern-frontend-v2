@@ -47,7 +47,7 @@ export const ProjectPage: React.FC = () => {
 
     //SOCKET-IO ROOM CONNECTION & TASK LISTENERS
     useEffect(() => {
-        socket = io(import.meta.env.VITE_SOCKET_URL);
+        socket = io(import.meta.env.VITE_BACKEND_URL);
         socket.emit('open project', id);
     },[id])
 
